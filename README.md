@@ -32,6 +32,7 @@ To resolve:
     $ sudo /Library/StartupItems/VirtualBox/VirtualBox restart
     $ vagrant up
 
+Then:
 
     $ # if you need to SSH to the VM for any reason
     $ vagrant ssh
@@ -45,11 +46,11 @@ To resolve:
     $ # remove the VM completely
     $ vagrant destroy
 
-## 2. MongoDB
+## 2. MongoDB (in the VM)
 
 Verify MongoDB is up in the VM: http://192.168.33.10:28017/
 
-## 3. Start Play
+## 3. Start Play (locally)
 
 To start play in local OS in dev mode:
 
@@ -57,13 +58,13 @@ To start play in local OS in dev mode:
 
 Go to: 
 
-## 4. Jenkins
+## 4. Jenkins (in the VM)
 
 The job is configured to automatically poll the GitHub repo every 60 seconds and execute.
 
 To view or manually start the job that builds and runs the app: http://192.168.33.10:8080/job/angular_play_scala
 
-## Play in the VM
+## 5. See the Play app (in the VM)
 
 Go to:
 
