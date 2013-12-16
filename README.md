@@ -1,6 +1,6 @@
 ## Overview
 
-angular_play_scala is a simple demo app using AngularJS and the Play framework with Scala and MongoDB. Using Vagrant and Chef Solo you can set up a mini CI/CD environment in a VM that pulls and runs code from this repository.
+angular_play_scala is a simple demo app using AngularJS and the Play framework with Scala and MongoDB. Using Vagrant and Chef Solo you can set up a mini CI/CD environment in a VM that uses Jenkins to pull and run code from this repository.
 
 A picture is worth a thousand words.
 
@@ -32,6 +32,7 @@ To resolve:
     $ sudo /Library/StartupItems/VirtualBox/VirtualBox restart
     $ vagrant up
 
+
     $ # if you need to SSH to the VM for any reason
     $ vagrant ssh
 
@@ -44,11 +45,11 @@ To resolve:
     $ # remove the VM completely
     $ vagrant destroy
 
-## MongoDB
+## 2. MongoDB
 
 Verify MongoDB is up in the VM: http://192.168.33.10:28017/
 
-## Start Play
+## 3. Start Play
 
 To start play in local OS in dev mode:
 
@@ -56,7 +57,7 @@ To start play in local OS in dev mode:
 
 Go to: 
 
-## Jenkins
+## 4. Jenkins
 
 The job is configured to automatically poll the GitHub repo every 60 seconds and execute.
 
