@@ -21,6 +21,8 @@ Creates a new Linux VM or starts a pre-existing one. Default config in the Vagra
     $ # cd to your clone directory of this repo
     $ vagrant up
 
+The first time you run this it's going to take a long time to complete, make sure you have a good Internet connection. Vagrant and Chef are installing Java, APT, Python, Git, Play, MongoDB and Jenkins. The good news is that once you have the VM installed on your workstation subsequent 'vagrant up' runs will be pretty quick. 
+
 NOTE: The Vagrantfile config uses a private network for the VM and a static IP of 192.168.33.10. If you're running OS X Mavericks and had VirtualBox installed pre-Mavericks, you may see the following error on vagrant up:
 
     $ Progress state: NS_ERROR_FAILURE
@@ -58,7 +60,7 @@ Unzip the Play package, then:
 
 To start play in local OS in dev mode:
 
-    $ play
+    $ play TBD
 
 Go to: 
 
@@ -70,10 +72,11 @@ To view or manually start the job that builds and runs the app: http://192.168.3
 
 ## 5. See the Play app (in the VM)
 
-Go to:
+Go to: TBD
 
 ## TODO
 
 * Integrate Berkshelf for Chef recipe dependency management
 * Add option for provisioning and deploying on AWS EC2
+* Create Vagrant base box with the software above already installed on it
 * For some reason the MongoDB Chef cookbook doesn't support creating user authentication passwords. Fork https://github.com/edelight/chef-mongodb, add support and submit pull request.
