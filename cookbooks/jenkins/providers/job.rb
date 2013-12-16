@@ -30,7 +30,8 @@ def store
   validate_job_config!
   if !exists? # create
     Chef::Log.debug("#{@new_resource} does not exist - creating.")
-    post_job(new_job_url)
+    #post_job(new_job_url)
+    create_job
   else # update
     Chef::Log.debug("#{@new_resource} exists - updating")
     post_job(job_url)
@@ -82,10 +83,17 @@ def exists?
   end
 end
 
+def create_job
+  jenkins_cli "create-job '#{@new_resource.job_name}' < #{@new_resource.config}"
+end
+
 def post_job(url)
   url = URI.parse(URI.escape(url))
+  puts url
+  puts "#{@new_resource} POST #{url.request_uri} using #{@new_resource.config}"
   Chef::Log.debug("#{@new_resource} POST #{url.request_uri} using #{@new_resource.config}")
   body = IO.read(@new_resource.config)
+  puts body
   headers = { 'Content-Type' => 'text/xml' }
   response = Chef::REST::RESTRequest.new(:POST, url, body, headers).call
   response.error! unless response.kind_of?(Net::HTTPSuccess)

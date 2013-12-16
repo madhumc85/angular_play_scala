@@ -80,3 +80,4 @@ Go to: TBD
 * Add option for provisioning and deploying on AWS EC2
 * Create Vagrant base box with the software above already installed on it
 * For some reason the MongoDB Chef cookbook doesn't support creating user authentication passwords. Fork https://github.com/edelight/chef-mongodb, add support and submit pull request.
+* Add static analysis via Sonar or something else: http://community.opscode.com/cookbooks/sonar
