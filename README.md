@@ -10,10 +10,6 @@ A picture is worth a thousand words.
 
 * Java 6 or higher
 * Play framework for local dev - http://downloads.typesafe.com/typesafe-activator/1.0.9/typesafe-activator-1.0.9.zip
-Unzip, then:
-
-    $ activator-1.0.9/activator ui
-
 * VirtualBox - https://www.virtualbox.org/wiki/Downloads
 * Vagrant - http://www.vagrantup.com/downloads.html
 * Git - if you don't already have
@@ -55,6 +51,10 @@ Then:
 Verify MongoDB is up in the VM: http://192.168.33.10:28017/
 
 ## 3. Start Play (locally)
+
+Unzip the Play package, then:
+
+    $ activator-1.0.9/activator ui
 
 To start play in local OS in dev mode:
 
