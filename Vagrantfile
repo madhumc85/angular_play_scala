@@ -30,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # The hostname the machine should have. If set to a string, the hostname 
   # will be set on boot.
-  config.vm.hostname = "vmhost"
+  # config.vm.hostname = "vmhost"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -73,6 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "mongodb::10gen_repo"
     chef.add_recipe "mongodb::default"
     chef.add_recipe "java"
+    chef.add_recipe "play::default"
     chef.add_recipe "jenkins::server_job"
     # chef.add_role "web"
   

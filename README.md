@@ -9,7 +9,11 @@ A picture is worth a thousand words.
 ## Pre-req installations
 
 * Java 6 or higher
-* Play framework for local dev - either standalone or via Typesafe Activator - http://www.playframework.com/download
+* Play framework for local dev - http://downloads.typesafe.com/typesafe-activator/1.0.9/typesafe-activator-1.0.9.zip
+Unzip, then:
+
+    $ activator-1.0.9/activator ui
+
 * VirtualBox - https://www.virtualbox.org/wiki/Downloads
 * Vagrant - http://www.vagrantup.com/downloads.html
 * Git - if you don't already have
