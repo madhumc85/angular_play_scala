@@ -35,7 +35,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>sh activator ui</command>
+      <command>./activator ui</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
