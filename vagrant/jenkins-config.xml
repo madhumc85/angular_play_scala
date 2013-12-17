@@ -35,10 +35,16 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./activator test</command>
+      <command>export PATH=$PATH:/opt/play</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>./activator run -Dhttp.address=192.168.33.10</command>
+      <command>play clean stage</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>play test</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>./target/universal/stage/bin/angular_play_scala -Dhttp.address=127.0.0.1</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

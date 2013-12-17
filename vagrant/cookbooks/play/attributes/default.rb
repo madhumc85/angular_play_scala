@@ -1,5 +1,5 @@
 default['play']['dir'] = "/opt/play"
-default['play']['version'] = "1.2.6"
+default['play']['version'] = "2.2.1"
 default['play']['checksum'] = "1c48944fdc7975a5a0a09d9166cef4e0aa63c5b07d52f5fa683a70a4387e6c05"
 default['play']['base_url'] = "http://downloads.typesafe.com/play"
 default['play']['user'] = "play"

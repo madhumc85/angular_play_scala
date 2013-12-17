@@ -1,6 +1,6 @@
 ## Overview
 
-angular_play_scala is a simple demo app using AngularJS and the Play framework with Scala and MongoDB. Using Vagrant and Chef Solo you can set up a mini CI/CD environment in a VM that uses Jenkins to pull and run code from this repository.
+angular_play_scala is a simple demo app using AngularJS and the Play framework with Scala and MongoDB. You can run and develop the app locally, and with the provided Vagrant and Chef cookbooks you can set up a mini CI/CD environment in a VM that uses Jenkins to pull the code from this repository, test and run the app in a VM.
 
 A picture is worth a thousand words.
 
@@ -16,12 +16,12 @@ A picture is worth a thousand words.
 
 ## 1. Vagrant
 
-Creates a new Linux VM or starts a pre-existing one. Default config in the Vagrantfile: Ubuntu 64 bit, 4GB RAM.
+Create a new Linux VM or start a pre-existing one. Default specs: Ubuntu 64 bit, 4GB RAM.
 
-    $ # cd to your clone directory of this repo
+    $ cd vagrant
     $ vagrant up
 
-The first time you run this it's going to take a long time to complete, make sure you have a good Internet connection. Vagrant and Chef are installing Java, APT, Python, Git, Play, MongoDB and Jenkins. The good news is that once you have the VM installed on your workstation subsequent 'vagrant up' runs will be pretty quick. 
+The first time you run this it's going to take a long time to complete, make sure you have a good Internet connection. Vagrant and Chef are installing Java, APT, RUnit, Python, Git, Play, MongoDB and Jenkins. The good news is that once you have the VM installed on your workstation subsequent 'vagrant up' runs will be pretty quick. 
 
 NOTE: The Vagrantfile config uses a private network for the VM and a static IP of 192.168.33.10. If you're running OS X Mavericks and had VirtualBox installed pre-Mavericks, you may see the following error on vagrant up:
 
@@ -62,9 +62,7 @@ Windows:
 
     $ activator.bat ui
 
-This will open a browser using the Typesafe Activator, compile the app code, run tests, and start the app.
-
-Go to: http://localhost:9000/
+This will open a browser using the Typesafe Activator, compile the app code, run tests, and start the app in dev mode. When it's done to see the app go to: http://localhost:9000/
 
 ## 4. Jenkins in the VM
 

@@ -80,6 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # You may also specify custom JSON attributes:
     chef.json = {mongodb: {package_version: "2.4.8"} }
     chef.json = {java: {jdk_version: "7"} }
+    chef.json = {play: {version: "2.2.1"}}
     chef.json = {jenkins: {install_method: "package"} }
   end
 
