@@ -35,7 +35,10 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./activator ui</command>
+      <command>./activator test</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>./activator run -Dhttp.address=192.168.33.10</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
