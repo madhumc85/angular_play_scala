@@ -48,27 +48,31 @@ Then:
     $ # remove the VM completely
     $ vagrant destroy
 
-## 2. MongoDB (in the VM)
+## 2. MongoDB in the VM
 
 Verify MongoDB is up in the VM: http://192.168.33.10:28017/
 
-## 3. Start Play (locally)
+## 3. Start Play locally
 
-Unzip the Play package, then cd to activator-1.0.9 directory.
+Mac OS:
 
-    $ activator ui
+    $ sh activator ui
 
-This will open a browser and allow you to use typesafe to launch the app.
+Windows:
+
+    $ activator.bat ui
+
+This will open a browser, compile the app code, run tests, and start the app.
 
 Go to: http://localhost:9000/
 
-## 4. Jenkins (in the VM)
+## 4. Jenkins in the VM
 
 The job is configured to automatically poll the GitHub repo every 60 seconds and execute.
 
 To view or manually start the job that builds and runs the app: http://192.168.33.10:8080/job/angular_play_scala
 
-## 5. See the Play app (in the VM)
+## 5. See the Play app in the VM
 
 Go to: http://192.168.33.10:9000/
 

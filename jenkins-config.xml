@@ -1,14 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>Build, run tests, static analysis, start play app</description>
+  <description>Build, run tests, start app</description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.gmail.ikeike443.PlayAutoTestJobProperty plugin="play-autotest-plugin@0.0.12">
-      <holder>
-        <applicationPath></applicationPath>
-      </holder>
-    </com.gmail.ikeike443.PlayAutoTestJobProperty>
+    <com.gmail.ikeike443.PlayAutoTestJobProperty plugin="play-autotest-plugin@0.0.12"/>
   </properties>
   <scm class="hudson.plugins.git.GitSCM" plugin="git@2.0">
     <configVersion>2</configVersion>
@@ -30,7 +26,7 @@
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers>
+  <triggers class="vector">
     <hudson.triggers.SCMTrigger>
       <spec>* * * * *</spec>
       <ignorePostCommitHooks>false</ignorePostCommitHooks>
@@ -38,38 +34,9 @@
   </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <com.gmail.ikeike443.PlayAutoTestBuilder plugin="play-autotest-plugin@0.0.12">
-      <play__cmd></play__cmd>
-      <play__cmd2></play__cmd2>
-      <play__cmd3></play__cmd3>
-      <play__cmd4></play__cmd4>
-      <play__cmd5></play__cmd5>
-      <play__cmds class="com.gmail.ikeike443.PlayAutoTestBuilder$1" serialization="custom">
-        <unserializable-parents/>
-        <list>
-          <default>
-            <size>5</size>
-          </default>
-          <int>10</int>
-          <string></string>
-          <string></string>
-          <string></string>
-          <string></string>
-          <string></string>
-        </list>
-        <com.gmail.ikeike443.PlayAutoTestBuilder_-1>
-          <default>
-            <outer-class reference="../../../.."/>
-            <val_-play__cmd></val_-play__cmd>
-            <val_-play__cmd2></val_-play__cmd2>
-            <val_-play__cmd3></val_-play__cmd3>
-            <val_-play__cmd4></val_-play__cmd4>
-            <val_-play__cmd5></val_-play__cmd5>
-          </default>
-        </com.gmail.ikeike443.PlayAutoTestBuilder_-1>
-      </play__cmds>
-      <play__path></play__path>
-    </com.gmail.ikeike443.PlayAutoTestBuilder>
+    <hudson.tasks.Shell>
+      <command>sh activator ui</command>
+    </hudson.tasks.Shell>
   </builders>
   <publishers>
     <com.gmail.ikeike443.PlayTestResultPublisher plugin="play-autotest-plugin@0.0.12"/>
