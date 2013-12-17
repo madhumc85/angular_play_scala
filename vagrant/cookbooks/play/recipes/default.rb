@@ -40,5 +40,6 @@ bash "install_play" do
   code <<-EOH
     unzip -q play-#{node['play']['version']}.zip
     mv play-#{node['play']['version']} #{node['play']['dir']}
+    chmod -R 777 #{node['play']['dir']}
   EOH
 end
