@@ -35,7 +35,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>export PATH=$PATH:/opt/play</command>
+      <command>export PATH=$PATH:/home/play</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>play clean stage</command>
@@ -44,7 +44,7 @@
       <command>play test</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>./target/universal/stage/bin/angular_play_scala -Dhttp.address=127.0.0.1</command>
+      <command>./target/universal/stage/bin/angular_play_scala -Dhttp.address=0.0.0.0</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
