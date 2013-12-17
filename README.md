@@ -62,7 +62,7 @@ Windows:
 
     $ activator.bat ui
 
-This will open a browser, compile the app code, run tests, and start the app.
+This will open a browser using the Typesafe Activator, compile the app code, run tests, and start the app.
 
 Go to: http://localhost:9000/
 
