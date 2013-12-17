@@ -10,7 +10,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://test:test@github.com/excellaco/angular_play_scala.git</url>
+        <url>https://angularplayscala:angularplayscala1@github.com/excellaco/angular_play_scala.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -35,16 +35,15 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>export PATH=$PATH:/home/play</command>
-    </hudson.tasks.Shell>
-    <hudson.tasks.Shell>
       <command>play clean stage</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>play test</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>./target/universal/stage/bin/angular_play_scala -Dhttp.address=0.0.0.0</command>
+      <command>
+        export BUILD_ID=dontKillMe
+        nohup ./target/universal/stage/bin/angular_play_scala -Dhttp.address=0.0.0.0</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

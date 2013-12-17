@@ -76,6 +76,7 @@ Go to: http://192.168.33.10:9000/
 
 ## TODO
 
+* Jenkins hangs and never exits from the job when it starts up Play in Prod mode (Play is working and just keeps listening). Find way to spawn process outside of Jenkins and to kill when pulling changes/restart.
 * Integrate Berkshelf for Chef recipe dependency management
 * Add option for provisioning and deploying on AWS EC2
 * Create Vagrant base box with the software above already installed on it
