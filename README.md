@@ -54,15 +54,13 @@ Verify MongoDB is up in the VM: http://192.168.33.10:28017/
 
 ## 3. Start Play (locally)
 
-Unzip the Play package, then:
+Unzip the Play package, then cd to activator-1.0.9 directory.
 
-    $ activator-1.0.9/activator ui
+    $ activator ui
 
-To start play in local OS in dev mode:
+This will open a browser and allow you to use typesafe to launch the app.
 
-    $ play TBD
-
-Go to: 
+Go to: http://localhost:9000/
 
 ## 4. Jenkins (in the VM)
 
@@ -72,7 +70,7 @@ To view or manually start the job that builds and runs the app: http://192.168.3
 
 ## 5. See the Play app (in the VM)
 
-Go to: TBD
+Go to: http://192.168.33.10:9000/
 
 ## TODO
 
