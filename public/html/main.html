@@ -15,7 +15,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="applicant in applicants | orderBy:['name.last','name.first']">
+			<tr ng-repeat="applicant in applicants | orderBy:['applicant.lastName','applicant.firstName']">
 				<td class="pad">{{applicant.lastName}}, {{applicant.firstName}}</td>
 				<td class="pad">{{applicant.age}}</td>
 				<td class="pad">{{applicant.email}}</td>

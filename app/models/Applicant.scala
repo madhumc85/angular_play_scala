@@ -1,7 +1,5 @@
 package models
 
-import java.util.Date
-
 import play.api.libs.json.Json
 import play.api.data._
 import play.api.data.Forms._
@@ -11,7 +9,7 @@ case class Applicant(
   lastName: String,
   age: Int,
   email: String,
-  phone: String,
+  phone: Long,
   city: String,
   state: String,
   zip: Int,
@@ -19,11 +17,11 @@ case class Applicant(
   appointments: Appointment)
 
 case class Application(
-  date: Date,
+  date: Int,
   desc: String)
 
 case class Appointment(
-  date: Date,
+  date: Int,
   desc: String)
 
 object JsonFormats {

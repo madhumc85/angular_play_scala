@@ -1,13 +1,12 @@
 package controllers
 
-import java.util.Date
-
 import models.{Applicant, Application, Appointment}
 import models.JsonFormats._
 
 import play.api._
 import play.api.data.Form
 import play.api.mvc._
+import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json._
 import scala.concurrent.Future
 
@@ -52,10 +51,10 @@ import play.modules.reactivemongo.json.collection.JSONCollection
       collection.find(Json.obj()).
       sort(Json.obj("created" -> -1)).
       cursor[Applicant]
-
+    
     // gather all the JsObjects in a list
-    val futureApplicantsList: Future[List[Applicant]] = cursor.toList
-
+    val futureApplicantsList: Future[List[Applicant]] = cursor.collect[List]()
+    
     // everything's ok! Let's reply with the array
     futureApplicantsList.map { applicants => Ok(applicants.toString) }
   }
@@ -71,16 +70,16 @@ import play.modules.reactivemongo.json.collection.JSONCollection
       body.\("lastName").as[String],
       body.\("age").as[Int],
       body.\("email").as[String],
-      body.\("phone").as[String],
+      body.\("phone").as[Long],
       body.\("city").as[String],
       body.\("state").as[String],
       body.\("zip").as[Int],
       Application(
-        body.\("application").\("date").as[Date],
+        body.\("application").\("date").as[Int],
         body.\("application").\("desc").as[String]
       ),
       Appointment(
-        body.\("appointment").\("date").as[Date],
+        body.\("appointment").\("date").as[Int],
         body.\("appointment").\("desc").as[String]
       )
     )
