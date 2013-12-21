@@ -56,7 +56,7 @@ import play.modules.reactivemongo.json.collection.JSONCollection
     val futureApplicantsList: Future[List[Applicant]] = cursor.collect[List]()
     
     // return JSON
-    futureApplicantsList.map { celebrities => Ok(Json.toJson(celebrities)) }
+    futureApplicantsList.map { applicants => Ok(Json.toJson(applicants)) }
   }
 
   /** create an applicant from the given JSON */
