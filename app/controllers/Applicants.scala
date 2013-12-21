@@ -51,12 +51,12 @@ import play.modules.reactivemongo.json.collection.JSONCollection
       collection.find(Json.obj()).
       sort(Json.obj("created" -> -1)).
       cursor[Applicant]
-    
+
     // gather all the JsObjects in a list
     val futureApplicantsList: Future[List[Applicant]] = cursor.collect[List]()
     
-    // everything's ok! Let's reply with the array
-    futureApplicantsList.map { applicants => Ok(applicants.toString) }
+    // return JSON
+    futureApplicantsList.map { celebrities => Ok(Json.toJson(celebrities)) }
   }
 
   /** create an applicant from the given JSON */
@@ -75,12 +75,12 @@ import play.modules.reactivemongo.json.collection.JSONCollection
       body.\("state").as[String],
       body.\("zip").as[Int],
       Application(
-        body.\("application").\("date").as[Int],
-        body.\("application").\("desc").as[String]
+        body.\("applications").\("date").as[Int],
+        body.\("applications").\("desc").as[String]
       ),
       Appointment(
-        body.\("appointment").\("date").as[Int],
-        body.\("appointment").\("desc").as[String]
+        body.\("appointments").\("date").as[Int],
+        body.\("appointments").\("desc").as[String]
       )
     )
 

@@ -1,86 +1,75 @@
 <div class="col-md-9">
-<form name="detailForm" role="form" class="form-horizontal">
-<fieldset>
-	<div class="control-group">
-		<label class="control-label" for="firstname">First Name</label>
-		<input type="text" class="form-control" id="firstname" name="firstname" data-ng-model="applicant.firstName" placeholder="Enter first name" required>
-		<span data-ng-show="detailForm.firstname.$error.required" class="help-inline">Required</span>
-	</div>
+  <form name="detailForm" role="form" class="form-horizontal">
+    <fieldset>
+	  <div class="control-group">
+	    <label class="control-label" for="firstname">First Name</label>
+	    <input type="text" class="form-control" id="firstname" name="firstname" ng-model="applicant.firstName" placeholder="Enter first name" required>
+	    <span ng-show="detailForm.firstname.$error.required" class="help-inline">Required</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="lastname">Last Name</label>
+	    <input type="text" class="form-control" id="lastname" name="lastname" ng-model="applicant.lastName" placeholder="Enter last name" required>
+        <span ng-show="detailForm.lastname.$error.required" class="help-inline">Required</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="age">Age</label>
+	    <input type="number" ng-maxlength=20 class="form-control" id="age" name="age" ng-model="applicant.age" placeholder="Enter age" required>
+	    <span ng-show="detailForm.age.$error.required" class="help-inline">Required</span>
+	    <span ng-show="detailForm.age.$error.number" class="help-inline">Not a Number</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="email">Email</label>
+	    <input type="email" class="form-control" id="email" name="email" ng-model="applicant.email" placeholder="Enter email" required>
+	    <span ng-show="detailForm.email.$error.required" class="help-inline">Required</span>
+	    <span ng-show="detailForm.email.$error.email" class="help-inline">Not an Email Address</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="phone">Phone</label>
+	    <input type="number" ng-maxlength=11 class="form-control" id="phone" name="phone" ng-model="applicant.phone" placeholder="Enter phone" required>
+	    <span ng-show="detailForm.phone.$error.required" class="help-inline">Required</span>
+	    <span ng-show="detailForm.phone.$error.number" class="help-inline">Not a Number</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="city">City</label>
+	    <input type="text" class="form-control" id="city" name="city" ng-model="applicant.city" placeholder="Enter city" required>
+	    <span ng-show="detailForm.city.$error.required" class="help-inline">Required</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="state">State</label>
+	    <input type="text" ng-maxlength=2 class="form-control" id="state" name="state" ng-model="applicant.state" placeholder="Enter state" required>
+	    <span ng-show="detailForm.state.$error.required" class="help-inline">Required</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="zip">ZIP</label>
+	    <input type="number" ng-maxlength=5 class="form-control" id="zip" name="zip" ng-model="applicant.zip" placeholder="Enter ZIP" required>
+	    <span ng-show="detailForm.zip.$error.required" class="help-inline">Required</span>
+	    <span ng-show="detailForm.zip.$error.number" class="help-inline">Not a Number</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="appdate">Application Date</label>
+	    <input type="number" ng-maxlength=8 class="form-control" id="appdate" name="appdate" ng-model="applicant.applications.date" placeholder="Enter Date" required>
+	    <span ng-show="detailForm.date.$error.required" class="help-inline">Required</span>
+	    <span ng-show="detailForm.date.$error.number" class="help-inline">Not a Number</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="appdesc">Application Description</label>
+	    <textarea type="text" class="form-control" id="appdesc" name="appdesc" ng-model="applicant.applications.desc" placeholder="Enter Description"></textarea>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="apptdate">Appointment Date</label>
+	    <input type="number" ng-maxlength=8 class="form-control" id="apptdate" name="apptdate" ng-model="applicant.appointments.date" placeholder="Enter Date" required>
+	    <span ng-show="detailForm.date.$error.required" class="help-inline">Required</span>
+	    <span ng-show="detailForm.date.$error.number" class="help-inline">Not a Number</span>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="apptdesc">Appointment Description</label>
+	    <textarea type="text" class="form-control" id="apptdesc" name="apptdesc" ng-model="applicant.appointments.desc" placeholder="Enter Description"></textarea>
+	  </div>
+
+      <br />
 	
-	<div class="control-group">
-		<label class="control-label" for="lastname">Last Name</label>
-		<input type="text" class="form-control" id="lastname" name="lastname" data-ng-model="applicant.lastName" placeholder="Enter last name" required>
-		<span data-ng-show="detailForm.lastname.$error.required" class="help-inline">Required</span>
-	</div>
- 
-	<div class="control-group">
-		<label class="control-label" for="age">Age</label>
-		<input type="text" class="form-control" id="age" name="age" data-ng-model="applicant.age" placeholder="Enter age" required>
-		<span data-ng-show="detailForm.age.$error.required" class="help-inline">Required</span>
-		<span data-ng-show="detailForm.age.$error.number" class="help-inline">Not a Number</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="email">Email</label>
-		<input type="text" class="form-control" id="email" name="email" data-ng-model="applicant.email" placeholder="Enter email" required>
-		<span data-ng-show="detailForm.email.$error.required" class="help-inline">Required</span>
-		<span data-ng-show="detailForm.email.$error.email" class="help-inline">Not an Email Address</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="phone">Phone</label>
-		<input type="text" class="form-control" id="phone" name="phone" data-ng-model="applicant.phone" placeholder="Enter phone" required>
-		<span data-ng-show="detailForm.phone.$error.required" class="help-inline">Required</span>
-		<span data-ng-show="detailForm.phone.$error.number" class="help-inline">Not a Number</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="city">City</label>
-		<input type="text" class="form-control" id="city" name="city" data-ng-model="applicant.city" placeholder="Enter city" required>
-		<span data-ng-show="detailForm.city.$error.required" class="help-inline">Required</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="state">State</label>
-		<input type="text" class="form-control" id="state" name="state" data-ng-model="applicant.state" placeholder="Enter state" required>
-		<span data-ng-show="detailForm.state.$error.required" class="help-inline">Required</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="zip">ZIP</label>
-		<input type="text" class="form-control" id="zip" name="zip" data-ng-model="applicant.zip" placeholder="Enter ZIP" required>
-		<span data-ng-show="detailForm.zip.$error.required" class="help-inline">Required</span>
-		<span data-ng-show="detailForm.zip.$error.number" class="help-inline">Not a Number</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="appdate">Application Date</label>
-		<input type="text" class="form-control" id="appdate" name="appdate" data-ng-model="applicant.application.date" placeholder="Enter Date" required>
-		<span data-ng-show="detailForm.date.$error.required" class="help-inline">Required</span>
-		<span data-ng-show="detailForm.date.$error.number" class="help-inline">Not a Number</span>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="appdesc">Application Description</label>
-		<textarea type="text" class="form-control" id="appdesc" name="appdesc" data-ng-model="applicant.application.desc" placeholder="Enter Description"></textarea>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="apptdate">Appointment Date</label>
-		<input type="text" class="form-control" id="apptdate" name="apptdate" data-ng-model="applicant.appointment.date" placeholder="Enter Date" required>
-		<span data-ng-show="detailForm.date.$error.required" class="help-inline">Required</span>
-		<span data-ng-show="detailForm.date.$error.number" class="help-inline">Not a Number</span>
-	</div>
-	
-	<div class="control-group">
-		<label class="control-label" for="apptdesc">Appointment Description</label>
-		<textarea type="text" class="form-control" id="apptdesc" name="apptdesc" data-ng-model="applicant.appointment.desc" placeholder="Enter Description"></textarea>
-	</div>
-
-	<br />
-	
-	<button data-ng-click="go('/')" class="btn btn-default">Cancel</button>
-	<button data-ng-click="save()" data-ng-disabled="noChange() || detailForm.$invalid" class="btn btn-primary">Save</button>
-</fieldset>
-</form>
+	  <a href="/" class="btn btn-default">Cancel</a>
+	  <button ng-click="save()" ng-disabled="noChange()" class="btn btn-primary">Save</button>
+    </fieldset>
+  </form>
 </div>

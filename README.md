@@ -64,6 +64,8 @@ Windows:
 
 This will open a browser using the Typesafe Activator, compile the app code, run tests, and start the app in dev mode. When it's done to see the app go to: http://localhost:9000/
 
+![alt tag](https://raw.github.com/excellaco/angular_play_scala/master/screen.png)
+
 ## 4. Jenkins in the VM
 
 The job is configured to automatically poll the GitHub repo every 60 seconds and execute.
