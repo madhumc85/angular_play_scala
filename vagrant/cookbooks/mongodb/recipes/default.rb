@@ -55,3 +55,10 @@ unless configured_as_replicaset
     smallfiles   node['mongodb']['smallfiles']
   end
 end
+
+execute "install-mongodb-config" do
+  command "mongo /vagrant/data.js"
+  action :run
+  retries 6
+  retry_delay 10
+end
