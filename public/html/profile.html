@@ -1,0 +1,81 @@
+<div>
+  <h2>Find a form</h2>
+  <br/>
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+	  <tr>
+	    <th>Form</th>
+		<th>Description</th>
+		<th>Fee</th>
+		<th>Get more info</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr ng-repeat="form in forms">
+		<td class="pad">{{form.form}}</td>
+		<td class="pad">{{form.desc}}</td>
+		<td class="pad">${{form.fee}}</td>
+		<td class="pad"><a href="{{form.url}}">{{form.url}}</a></td>
+	  </tr>
+    </tbody>
+  </table>
+  <h2>My profile</h2>
+  <br/>
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Make updates</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="profile in profiles">
+        <td class="pad">{{profile.lastName}}, {{profile.firstName}}</td>
+        <td class="pad">{{profile.age}}</td>
+        <td class="pad">{{profile.email}}</td>
+        <td class="pad">{{profile.phone}}</td>
+        <td class="pad">{{profile.city}}</td>
+        <td class="pad">{{profile.state}}</td>
+        <td class="pad">{{profile.zip}}</td>
+        <td><a href="/edit/{{profile._id.$oid}}"><i class="glyphicon glyphicon-pencil"></i></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>My applications:</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="profile in profiles">
+        <td class="pad">{{profile.applications.date}}</td>
+        <td class="pad">{{profile.applications.desc}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br/>
+  <h4>My appointments:</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="profile in profiles">
+        <td class="pad">{{profile.appointments.date}}</td>
+        <td class="pad">{{profile.appointments.desc}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
