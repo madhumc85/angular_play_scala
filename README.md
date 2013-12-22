@@ -6,7 +6,7 @@ A picture is worth a thousand words.
 
 ![play_ci](./screens/play_ci.png)
 
-## Pre-req installations
+## 1. Pre-req installations
 
 * Java 6 or higher
 * Play framework for local dev - http://www.playframework.com/download (Use the Typesafe Activator for local dev)
@@ -14,7 +14,7 @@ A picture is worth a thousand words.
 * Vagrant - http://www.vagrantup.com/downloads.html
 * Git - if you don't already have
 
-## 1. Vagrant
+## 2. Vagrant
 
 Create a new Linux VM or start a pre-existing one. Default specs: Ubuntu 64 bit, 4GB RAM.
 
@@ -48,11 +48,11 @@ Then:
     $ # remove the VM completely
     $ vagrant destroy
 
-## 2. MongoDB in the VM
+## 3. MongoDB in the VM
 
 Verify MongoDB is up in the VM: http://192.168.33.10:28017/
 
-## 3. Start Play locally
+## 4. Start Play locally
 
 Mac OS:
 
@@ -64,13 +64,13 @@ Windows:
 
 This will open a browser using the Typesafe Activator, compile the app code, run tests, and start the app in dev mode. When it's done to see the app go to: http://localhost:9000/
 
-## 4. Jenkins in the VM
+## 5. Jenkins in the VM
 
 The job is configured to automatically poll the GitHub repo every 60 seconds and execute.
 
 To view or manually start the job that builds and runs the app: http://192.168.33.10:8080/job/angular_play_scala
 
-## 5. See the Play app in the VM
+## 6. See the Play app in the VM
 
 Go to: http://192.168.33.10:9000/
 
@@ -79,8 +79,6 @@ Go to: http://192.168.33.10:9000/
 ![home](./screens/home.png)
 
 ![create](./screens/create.png)
-
-
 
 ![profile](./screens/profile.png)
 
