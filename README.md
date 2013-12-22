@@ -1,5 +1,7 @@
 ## Overview
 
+![home](./screens/home.png)
+
 angular_play_scala is a simple demo app using AngularJS and the Play framework with Scala and MongoDB. You can run and develop the app locally, and with the provided Vagrant and Chef cookbooks you can set up a mini CI/CD environment in a VM that uses Jenkins to pull the code from this repository, test and run the app in a VM.
 
 A picture is worth a thousand words.
