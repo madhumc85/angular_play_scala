@@ -16,6 +16,7 @@ object Init extends Controller {
   def getURI(any: String): String = any match {
     case "main" => "/public/html/main.html"
     case "detail" => "/public/html/detail.html"
+    case "profile" => "/public/html/profile.html"
     case _ => "error"
   }
   
