@@ -2,25 +2,48 @@
 
 // Declare app level module which depends on others
 angular.module('app', ['ngResource'])
-  .constant('apiUrl', 'http://localhost:9000\:9000/api/applicants')
+  .constant('apiUrl', 'http://localhost:9000\:9000/api')
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {templateUrl: '/views/main', controller: 'ListCtrl'})
       .when('/create', {templateUrl: 'views/detail', controller: 'CreateCtrl'})
+      .when('/profile', {templateUrl: 'views/profile', controller: 'ProfileCtrl'})
+      .when('/edit/:id', {templateUrl: 'views/detail', controller: 'EditCtrl'})
       .otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true);
   }])
 
-// list applicants and display entry form
+// home page list forms
 .controller('ListCtrl', ['$scope', '$resource', 'apiUrl', function($scope, $resource, apiUrl) {
-  $scope.applicants = $resource(apiUrl).query();
+  $scope.forms = $resource(apiUrl+'/forms').query();
 }])
 
-// create applicant form
+// create profile form
 .controller('CreateCtrl', ['$scope', '$resource', 'apiUrl', '$location', function($scope, $resource, apiUrl, $location) {
-  // save new applicant
-  $scope.save = function() {
-    $resource(apiUrl).save($scope.applicant);
-	$location.path('/');
+  $scope.cancel = function() {
+    $location.path('/');
   };
-}]);
+  // save new profile
+  $scope.save = function() {
+    $resource(apiUrl+'/profiles').save($scope.profile);
+	  $location.path('/profile');
+  };
+}])
+
+// display profile
+.controller('ProfileCtrl', ['$scope', '$resource', 'apiUrl', function($scope, $resource, apiUrl) {
+  $scope.forms = $resource(apiUrl+'/forms').query();
+  $scope.profiles = $resource(apiUrl+'/profiles').query();
+}])
+
+// edit profile form
+.controller('EditCtrl', ['$scope', '$resource', "$routeParams", 'apiUrl', '$location', function($scope, $resource, $routeParams, apiUrl, $location) {
+  // save profile
+  $scope.save = function() {
+    $resource(apiUrl+'/profiles').save($scope.profile);
+    $location.path('/profile');
+  };
+}])
+
+
+;

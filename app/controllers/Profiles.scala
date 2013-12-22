@@ -45,6 +45,19 @@ import play.modules.reactivemongo.json.collection.JSONCollection
   // Using case classes + Json Writes and Reads //
   // ------------------------------------------ //
 
+  /** list profiles */
+  def index = Action.async {
+    // find all profiles from mongo
+    // TODO the find should be based on email of person
+    val cursor: Cursor[Profile] = collection.find(Json.obj()).cursor[Profile]
+
+    // gather all the JsObjects in a list
+    val futureProfilesList: Future[List[Profile]] = cursor.collect[List]()
+    
+    // return JSON
+    futureProfilesList.map { profiles => Ok(Json.toJson(profiles)) }
+  }
+
   /** retrieve a profile for the given id as JSON */
   def show(id: String) = Action.async(parse.empty) { request =>
     val cursor: Cursor[Profile] = 
@@ -75,12 +88,11 @@ import play.modules.reactivemongo.json.collection.JSONCollection
       body.\("state").as[String],
       body.\("zip").as[Int],
       Application(
-        body.\("applications").\("date").as[Int],
+        body.\("applications").\("date").as[String],
         body.\("applications").\("desc").as[String]),
       Appointment(
-        body.\("appointments").\("date").as[Int],
-        body.\("appointments").\("desc").as[String])
-    )
+        body.\("appointments").\("date").as[String],
+        body.\("appointments").\("desc").as[String]))
 
     // save to mongo and return Ok
     collection.save(profile).map(_ => Ok)
@@ -103,12 +115,12 @@ import play.modules.reactivemongo.json.collection.JSONCollection
       body.\("state").as[String],
       body.\("zip").as[Int],
       Application(
-        body.\("applications").\("date").as[Int],
+        body.\("applications").\("date").as[String],
         body.\("applications").\("desc").as[String]),
       Appointment(
-        body.\("appointments").\("date").as[Int],
-        body.\("appointments").\("desc").as[String])
-    )
+        body.\("appointments").\("date").as[String],
+        body.\("appointments").\("desc").as[String]))
+
     // insert to mongo and return Ok
     collection.insert(profile).map(_ => Ok)
   }

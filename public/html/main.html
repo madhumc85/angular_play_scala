@@ -1,36 +1,29 @@
 <div>
+  <h2>How can we help you?</h2>
   <div class="input-group">
-    <input type="text" ng-model="search" class="search-query" placeholder="Search">
+    <input type="text" ng-model="search" class="search-query" placeholder="Enter a question">
   </div>
   <br/>
-  <table>
+  <h2>Find a form</h2>
+  <table class="table table-striped table-bordered table-hover">
     <thead>
 	  <tr>
-	    <th>Name</th>
-		<th>Age</th>
-		<th>Email</th>
-		<th>Phone</th>
-		<th>City</th>
-		<th>State</th>
-		<th>Zip</th>
-		<th>Application</th>
-		<th>Appointment</th>
+	    <th>Form</th>
+		<th>Description</th>
+		<th>Fee</th>
+		<th>Get more info</th>
 	  </tr>
 	</thead>
 	<tbody>
-	  <tr ng-repeat="applicant in applicants | filter:search | orderBy:['applicant.lastName','applicant.firstName']">
-		<td class="pad">{{applicant.lastName}}, {{applicant.firstName}}</td>
-		<td class="pad">{{applicant.age}}</td>
-		<td class="pad">{{applicant.email}}</td>
-		<td class="pad">{{applicant.phone}}</td>
-		<td class="pad">{{applicant.city}}</td>
-		<td class="pad">{{applicant.state}}</td>
-		<td class="pad">{{applicant.zip}}</td>
-		<td class="pad">{{applicant.applications.desc}}</td>
-		<td class="pad">{{applicant.appointments.desc}}</td>
+	  <tr ng-repeat="form in forms | filter:search">
+		<td class="pad">{{form.form}}</td>
+		<td class="pad">{{form.desc}}</td>
+		<td class="pad">${{form.fee}}</td>
+		<td class="pad"><a href="{{form.url}}">{{form.url}}</a></td>
 	  </tr>
     </tbody>
   </table>
   <br/>
-  <a href="/create" class="btn btn-primary">Create New</a>
+  <h2>Track your status</h2>
+  <a href="">Sign In</a> or <a href="/create">Create a Profile</a>
 </div>

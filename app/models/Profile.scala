@@ -21,11 +21,11 @@ case class Profile(
   appointments: Appointment)
 
 case class Application(
-  date: Int,
+  date: String,
   desc: String)
 
 case class Appointment(
-  date: Int,
+  date: String,
   desc: String)
 
 object ProfileJsonFormats {

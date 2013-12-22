@@ -4,7 +4,7 @@ angular_play_scala is a simple demo app using AngularJS and the Play framework w
 
 A picture is worth a thousand words.
 
-![alt tag](https://raw.github.com/excellaco/angular_play_scala/master/play_ci.png)
+![play_ci](./screens/play_ci.png)
 
 ## Pre-req installations
 
@@ -64,8 +64,6 @@ Windows:
 
 This will open a browser using the Typesafe Activator, compile the app code, run tests, and start the app in dev mode. When it's done to see the app go to: http://localhost:9000/
 
-![alt tag](https://raw.github.com/excellaco/angular_play_scala/master/screen.png)
-
 ## 4. Jenkins in the VM
 
 The job is configured to automatically poll the GitHub repo every 60 seconds and execute.
@@ -75,6 +73,14 @@ To view or manually start the job that builds and runs the app: http://192.168.3
 ## 5. See the Play app in the VM
 
 Go to: http://192.168.33.10:9000/
+
+## Screens
+
+![home](./screens/home.png)
+
+![create](./screens/create.png)
+
+![profile](./screens/profile.png)
 
 ## TODO
 
