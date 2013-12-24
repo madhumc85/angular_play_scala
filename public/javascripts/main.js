@@ -1,8 +1,8 @@
 'use strict';
 
 // Declare app level module which depends on others
-angular.module('app', ['ngResource'])
-  .constant('apiUrl', 'http://localhost:9000\:9000/api')
+angular.module('app', ['ngResource', 'ngRoute'])
+  .constant('apiUrl', 'http://localhost:9000/api')
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {templateUrl: '/views/main', controller: 'ListCtrl'})
@@ -10,7 +10,7 @@ angular.module('app', ['ngResource'])
       .when('/profile', {templateUrl: 'views/profile', controller: 'ProfileCtrl'})
       .when('/edit/:id', {templateUrl: 'views/detail', controller: 'EditCtrl'})
       .otherwise({redirectTo: '/'});
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true).hashPrefix('!');
   }])
 
 // home page list forms
@@ -37,13 +37,14 @@ angular.module('app', ['ngResource'])
 }])
 
 // edit profile form
-.controller('EditCtrl', ['$scope', '$resource', "$routeParams", 'apiUrl', '$location', function($scope, $resource, $routeParams, apiUrl, $location) {
-  // save profile
+.controller('EditCtrl', ['$scope', '$resource', '$routeParams', 'apiUrl', '$location', function($scope, $resource, $routeParams, apiUrl, $location) {
+  if ($routeParams.id) {
+    $scope.profile = $resource(apiUrl+'/profiles/:id', {id:$routeParams.id}).get();
+  }
+
+  // save profile update
   $scope.save = function() {
-    $resource(apiUrl+'/profiles').save($scope.profile);
+    $resource(apiUrl+'/profiles/'+$routeParams.id).save($scope.profile);
     $location.path('/profile');
   };
-}])
-
-
-;
+}]);

@@ -8,10 +8,12 @@ import play.api.data.Form
 import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json._
+import play.modules.reactivemongo.json.BSONFormats._
 import scala.concurrent.Future
 
 // Reactive Mongo imports
 import reactivemongo.api._
+import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONObjectID
 
 // Reactive Mongo plugin, including the JSON-specialized collection
@@ -60,15 +62,10 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 
   /** retrieve a profile for the given id as JSON */
   def show(id: String) = Action.async(parse.empty) { request =>
-    val cursor: Cursor[Profile] = 
-      collection.find(Json.obj("email" -> id)).
-      cursor[Profile]
+    val futureProfile = collection.find(BSONDocument("_id" -> new BSONObjectID(id))).one[Profile]
 
-    // gather JsObjects in a list, though should only be one profile
-    val futureProfilesList: Future[List[Profile]] = cursor.collect[List]()
-    
     // return JSON
-    futureProfilesList.map { profiles => Ok(Json.toJson(profiles)) }
+    futureProfile.map { profile => Ok(Json.toJson(profile)) }
   }
   
   /** update a profile for the given id from the JSON body */
