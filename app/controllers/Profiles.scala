@@ -47,19 +47,6 @@ import play.modules.reactivemongo.json.collection.JSONCollection
   // Using case classes + Json Writes and Reads //
   // ------------------------------------------ //
 
-  /** list profiles */
-  def index = Action.async {
-    // find all profiles from mongo
-    // TODO the find should be based on email of person
-    val cursor: Cursor[Profile] = collection.find(Json.obj()).cursor[Profile]
-
-    // gather all the JsObjects in a list
-    val futureProfilesList: Future[List[Profile]] = cursor.collect[List]()
-    
-    // return JSON
-    futureProfilesList.map { profiles => Ok(Json.toJson(profiles)) }
-  }
-
   /** retrieve a profile for the given id as JSON */
   def show(id: String) = Action.async(parse.empty) { request =>
     val futureProfile = collection.find(BSONDocument("_id" -> new BSONObjectID(id))).one[Profile]
@@ -118,8 +105,8 @@ import play.modules.reactivemongo.json.collection.JSONCollection
         body.\("appointments").\("date").as[String],
         body.\("appointments").\("desc").as[String]))
 
-    // insert to mongo and return Ok
-    collection.insert(profile).map(_ => Ok)
+    // insert to mongo and return Ok with the new JSON object
+    collection.insert(profile).map(_ => Ok(Json.toJson(profile)))
   }
 
 }
