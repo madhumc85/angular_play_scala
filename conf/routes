@@ -13,7 +13,7 @@ GET     /api/forms                  controllers.AppForms.index
 POST    /api/profiles     		    controllers.Profiles.create
 GET     /api/profiles       		controllers.Profiles.index
 GET     /api/profiles/:id     		controllers.Profiles.show(id: String)
-PUT     /api/profiles/:id     		controllers.Profiles.update(id: String)
+POST    /api/profiles/:id     		controllers.Profiles.update(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

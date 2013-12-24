@@ -6,9 +6,9 @@ angular.module('app', ['ngResource', 'ngRoute'])
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {templateUrl: '/views/main', controller: 'ListCtrl'})
-      .when('/create', {templateUrl: 'views/detail', controller: 'CreateCtrl'})
-      .when('/profile', {templateUrl: 'views/profile', controller: 'ProfileCtrl'})
-      .when('/edit/:id', {templateUrl: 'views/detail', controller: 'EditCtrl'})
+      .when('/create', {templateUrl: '/views/detail', controller: 'CreateCtrl'})
+      .when('/profile', {templateUrl: '/views/profile', controller: 'ProfileCtrl'})
+      .when('/edit/:id', {templateUrl: '/views/detail', controller: 'EditCtrl'})
       .otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true).hashPrefix('!');
   }])
@@ -31,20 +31,29 @@ angular.module('app', ['ngResource', 'ngRoute'])
 }])
 
 // display profile
-.controller('ProfileCtrl', ['$scope', '$resource', 'apiUrl', function($scope, $resource, apiUrl) {
+.controller('ProfileCtrl', ['$scope', '$resource', 'apiUrl', '$location', '$anchorScroll', function($scope, $resource, apiUrl, $location, $anchorScroll) {
   $scope.forms = $resource(apiUrl+'/forms').query();
   $scope.profiles = $resource(apiUrl+'/profiles').query();
 }])
 
 // edit profile form
-.controller('EditCtrl', ['$scope', '$resource', '$routeParams', 'apiUrl', '$location', function($scope, $resource, $routeParams, apiUrl, $location) {
+.controller('EditCtrl', ['$scope', '$resource', '$routeParams', 'apiUrl', '$location', '$anchorScroll', function($scope, $resource, $routeParams, apiUrl, $location, $anchorScroll) {
   if ($routeParams.id) {
-    $scope.profile = $resource(apiUrl+'/profiles/:id', {id:$routeParams.id}).get();
+    $scope.profile = $resource(apiUrl+'/profiles/'+$routeParams.id).get();
   }
+
+  $scope.cancel = function() {
+    $location.hash('top');
+    $anchorScroll();
+    $location.path('/profile');
+  };
 
   // save profile update
   $scope.save = function() {
     $resource(apiUrl+'/profiles/'+$routeParams.id).save($scope.profile);
+    $scope.$apply();
+    $location.hash('top');
+    $anchorScroll();
     $location.path('/profile');
   };
 }]);
