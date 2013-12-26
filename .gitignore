@@ -55,3 +55,4 @@ dist
 /RUNNING_PID
 /.settings
 activator-sbt-*-shim.sbt
+client_secret_*.apps.googleusercontent.com.json
