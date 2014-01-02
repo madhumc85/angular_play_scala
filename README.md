@@ -145,11 +145,3 @@ Go to: http://vm.example.com:9000/
 ![create](./screens/create.png)
 
 ![profile](./screens/profile.png)
-
-## TODO
-
-* Jenkins hangs and never exits from the job when it starts up Play in Prod mode (Play is working and just keeps listening). Find way to spawn process outside of Jenkins and to kill when pulling changes/restart.
-* Integrate Berkshelf for Chef recipe dependency management
-* Add option for provisioning and deploying on AWS EC2
-* For some reason the MongoDB Chef cookbook doesn't support creating user authentication passwords. Fork https://github.com/edelight/chef-mongodb, add support and submit pull request.
-* Add static analysis via Sonar or something else: http://community.opscode.com/cookbooks/sonar
