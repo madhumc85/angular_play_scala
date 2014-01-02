@@ -68,6 +68,7 @@ Add the following entries to the file:
     $ 192.168.33.10  vm.example.com
 
 Google console screenshot:
+
 ![google](./screens/google.png)
 
 ## 3. Vagrant
