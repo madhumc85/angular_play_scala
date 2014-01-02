@@ -32,3 +32,5 @@ attribute "apt/key_proxy",
 attribute "apt/caching_server",
   :description => "Set this to true if the node is a caching server",
   :default => "false"
+
+depends 'hostsfile'

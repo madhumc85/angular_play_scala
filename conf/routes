@@ -2,21 +2,38 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# ~~~~INSECURE URLs~~~~
+
 # Home
 GET     /                           controllers.Init.index(any = "none")
 
 # Serve public HTML to Angular
 GET     /views/*any                 controllers.Init.loadPublicHTML(any)
 
-# JSON APIs 
-GET     /api/forms                  controllers.AppForms.index
-POST    /api/profiles     		    controllers.Profiles.create
-GET     /api/profiles/:id     		controllers.Profiles.show(id: String)
-POST    /api/profiles/:id     		controllers.Profiles.update(id: String)
-
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-# Redirect all unknown routes to the index page
-GET     /*any						controllers.Init.index(any)
+# JSON API
+GET     /api/forms                  controllers.AppForms.index
 
+# ~~~~SECURE URLs~~~~
+
+GET 	/app/profilecheck			controllers.Profiles.check
+
+# JSON APIs
+GET     /api/profiles/:id           controllers.Profiles.show(id: String)
+POST    /api/profiles/:id           controllers.Profiles.update(id: String)
+
+# ~~~~SECURESOCIAL CONFIG~~~~
+
+# Login page
+GET     /app/login                  controllers.Init.index(any = "none")
+GET     /app/logout                 securesocial.controllers.LoginPage.logout
+
+# Providers entry points
+GET     /app/authenticate/:provider securesocial.controllers.ProviderController.authenticate(provider)
+POST    /app/authenticate/:provider securesocial.controllers.ProviderController.authenticateByPost(provider)
+GET     /app/not-authorized         securesocial.controllers.ProviderController.notAuthorized
+
+# Redirect all unknown routes to the index page
+GET     /*any                       controllers.Init.index(any)
