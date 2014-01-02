@@ -35,6 +35,11 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
+      <command>
+        cd scripts
+        ruby domain.rb --domain vm.example.com</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
       <command>play clean stage</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
@@ -43,6 +48,10 @@
     <hudson.tasks.Shell>
       <command>
         export BUILD_ID=dontKillMe
+        export MONGO1=192.168.33.10:27017
+        export DOMAIN=vm.example.com
+        export CLIENT_ID=514042321319-1aps5d857q8bhkth7stftf86t3ruponj.apps.googleusercontent.com
+        export CLIENT_SECRET=zy8k1f_Ngii5JiVqe1g5c4zb
         nohup ./target/universal/stage/bin/angular_play_scala -Dhttp.address=0.0.0.0</command>
     </hudson.tasks.Shell>
   </builders>

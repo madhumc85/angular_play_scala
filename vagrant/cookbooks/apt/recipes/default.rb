@@ -81,3 +81,8 @@ end
     only_if { apt_installed? }
   end
 end
+
+hostsfile_entry '192.168.33.10' do
+  hostname  'vm.example.com'
+  action    :create_if_missing
+end

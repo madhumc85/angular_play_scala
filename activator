@@ -306,4 +306,9 @@ if [[ -f "$java_opts_config" ]]; then
   done
 fi
 
+export MONGO1=192.168.33.10:27017
+export DOMAIN=local.example.com
+export CLIENT_ID=514042321319-vcdd9c11cd22ssk0e5156tbsaqthkno1.apps.googleusercontent.com
+export CLIENT_SECRET=quCq1ZpGLjZr8aKWeMd1yiCO
+
 run "$@"
