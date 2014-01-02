@@ -44,13 +44,15 @@ The demo web app provides login using Google username/password. This is done usi
   * Authorized Javascript origins - enter: http://vm.example.com:9000
   * Authorized redirect URI - enter: http://vm.example.com:9000/app/authenticate/google
   * Download JSON
-7. You need to run a provided Ruby script that will update config files with your client_id and client_secret values you received from Google.
+7. You need to run a provided Ruby script that will update config files with your client_id and client_secret values you received from Google (commands below).
+8. You need to update your local hosts file to add entries for local.example.com and vm.example.com (info below).
+
+Ruby script:
 
     $ cd scripts
-    
     $ ruby vars.rb --local_client_id yourvalue --local_client_secret yourvalue --vm_client_id yourvalue --vm_client_secret yourvalue
 
-8. You need to update your local hosts file to add entries for local.example.com and vm.example.com.
+etc/hosts:
 
 Mac OS:
 
