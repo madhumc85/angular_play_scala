@@ -14,8 +14,8 @@ set APP_VERSION=1.0.10
 set ACTIVATOR_LAUNCH_JAR=activator-launch-%APP_VERSION%.jar
 set MONGO1=192.168.33.10:27017
 set DOMAIN=local.example.com
-set CLIENT_ID=514042321319-vcdd9c11cd22ssk0e5156tbsaqthkno1.apps.googleusercontent.com
-set CLIENT_SECRET=quCq1ZpGLjZr8aKWeMd1yiCO
+set CLIENT_ID=google_client_id
+set CLIENT_SECRET=google_client_secret
 
 rem Detect if we were double clicked, although theoretically A user could
 rem manually run cmd /c
