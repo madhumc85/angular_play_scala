@@ -44,9 +44,6 @@ The demo web app provides login using Google username/password. This is done usi
   * Authorized Javascript origins - enter: http://vm.example.com:9000
   * Authorized redirect URI - enter: http://vm.example.com:9000/app/authenticate/google
   * Download JSON
-
-![google](./screens/google.png)
-
 7. You need to run a provided Ruby script that will update config files with your client_id and client_secret values you received from Google.
 
     $ cd scripts
@@ -66,6 +63,8 @@ Add the following entries to the file:
 
     $ 127.0.0.1      local.example.com
     $ 192.168.33.10  vm.example.com
+
+![google](./screens/google.png)
 
 ## 3. Vagrant
 
