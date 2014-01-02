@@ -1,6 +1,8 @@
+Home screen:
+
 ![home](./screens/home.png)
 
-This is a demo of a RESTFul web app with 3rd party authentication and profile creation/edit. You can run and develop the app locally and run the provided mini CI/CD environment in a VM that pulls the code from this repository, tests and runs the app.
+This is a demo of a RESTFul web app with 3rd party authentication and profile creation/edit. You can run and develop the app locally and run the self-contained provided mini CI/CD environment in a VM that pulls the code from this repository, tests and runs the app.
 
 Technologies used:
 * Play framework with Scala
