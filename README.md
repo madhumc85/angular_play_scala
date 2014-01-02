@@ -20,7 +20,7 @@ A picture's worth a thousand words.
 ## 1. Required installs
 
 * Java 6 or higher
-* Play framework for local dev - http://www.playframework.com/download (Use the Typesafe Activator for local dev)
+* Play framework for local dev - http://downloads.typesafe.com/typesafe-activator/1.0.10/typesafe-activator-1.0.10.zip (Use the Typesafe Activator for local dev)
 * VirtualBox - https://www.virtualbox.org/wiki/Downloads
 * Vagrant - http://www.vagrantup.com/downloads.html
 * Git - if you don't already have (clone this repo)
@@ -28,22 +28,22 @@ A picture's worth a thousand words.
 
 ## 2. Google setup
 
-The demo web app allows login using Google username/password. This is done using Google's OAuth APIs, which require the calling app to provide a client id and secret key for using the API. We cannot share client id and secret in a public GitHub site, so you must register your own app on Google's site and configure the app to use your credentials when making OAuth API calls.
+The demo web app provides login using Google username/password. This is done using Google's OAuth APIs, which require the calling app to provide a client id and secret key for using the API. We cannot share client ids and secrets in a public GitHub site, so you must register your own app on Google's site and configure the app to use your OAuth API credentials.
 
 1. Login here with a Google Id: https://cloud.google.com/console
 2. Create Project (name doesn't matter)
 3. Go to APIs & auth - APIs - enable the Google+ API access
 4. Go to APIs & auth - Credentials - OAuth
 5. Create New Client ID:
-Select Web application
-Authorized Javascript origins - enter: http://local.example.com:9000
-Authorized redirect URI - enter: http://local.example.com:9000/app/authenticate/google
-Download JSON - you will need the client_id and client_secret values from this file for setup
+  * Select Web application
+  * Authorized Javascript origins - enter: http://local.example.com:9000
+  * Authorized redirect URI - enter: http://local.example.com:9000/app/authenticate/google
+  * Download JSON - you will need the client_id and client_secret values from this file for setup
 6. Create New Client ID:
-Select Web application
-Authorized Javascript origins - enter: http://vm.example.com:9000
-Authorized redirect URI - enter: http://vm.example.com:9000/app/authenticate/google
-Download JSON
+  * Select Web application
+  * Authorized Javascript origins - enter: http://vm.example.com:9000
+  * Authorized redirect URI - enter: http://vm.example.com:9000/app/authenticate/google
+  * Download JSON
 
 ![google](./screens/google.png)
 
