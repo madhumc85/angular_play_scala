@@ -2,14 +2,14 @@
 
 // Declare app level module which depends on others
 angular.module('app', ['ngResource', 'ngRoute'])
-  .constant('apiUrl', 'http://localhost:9000/api')
+  .constant('apiUrl', 'http://local.example.com:9000/api')
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {templateUrl: '/views/main', controller: 'ListCtrl'})
-      .when('/create', {templateUrl: '/views/detail', controller: 'CreateCtrl'})
+      .when('/create/:id', {templateUrl: '/views/detail', controller: 'CreateCtrl'})
       .when('/profile/:id', {templateUrl: '/views/profile', controller: 'ProfileCtrl'})
-      .when('/edit/:id', {templateUrl: '/views/detail', controller: 'EditCtrl'})
-      .otherwise({redirectTo: '/'});
+      .when('/edit/:id', {templateUrl: '/views/detail', controller: 'EditCtrl'});
+      //.otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true).hashPrefix('!');
   }])
 
@@ -19,15 +19,22 @@ angular.module('app', ['ngResource', 'ngRoute'])
 }])
 
 // create profile form
-.controller('CreateCtrl', ['$scope', '$resource', 'apiUrl', '$location', function($scope, $resource, apiUrl, $location) {
+.controller('CreateCtrl', ['$scope', '$resource', '$routeParams', 'apiUrl', '$location', '$anchorScroll', function($scope, $resource, $routeParams, apiUrl, $location, $anchorScroll) {
+  if ($routeParams.id) {
+    $scope.profile = $resource(apiUrl+'/profiles/'+$routeParams.id).get();
+  }
+
   $scope.cancel = function() {
     $location.path('/');
   };
-  // save new profile
+
+  // save profile update
   $scope.save = function() {
-    // use callback so we can get back the new id from mongo
-    $resource(apiUrl+'/profiles').save($scope.profile, function(profile) {
-	    $location.path('/profile/'+profile._id.$oid);
+    $resource(apiUrl+'/profiles/'+$routeParams.id).save($scope.profile, function(profile) {
+      $scope.$apply();
+      $location.hash('top');
+      $anchorScroll();
+      $location.path('/profile/'+$routeParams.id);
     });
   };
 }])

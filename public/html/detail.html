@@ -5,13 +5,11 @@
     <fieldset>
 	  <div class="control-group">
 	    <label class="control-label" for="firstname">First Name</label>
-	    <input type="text" class="form-control" id="firstname" name="firstname" ng-model="profile.firstName" placeholder="Enter first name" required>
-	    <span ng-show="detailForm.firstname.$error.required" class="help-inline">Required</span>
+	    <input ng-readonly="profile.firstName" class="form-control" id="firstname" name="firstname" ng-model="profile.firstName" placeholder="Enter first name" required>
 	  </div>
 	  <div class="control-group">
 	    <label class="control-label" for="lastname">Last Name</label>
-	    <input type="text" class="form-control" id="lastname" name="lastname" ng-model="profile.lastName" placeholder="Enter last name" required>
-        <span ng-show="detailForm.lastname.$error.required" class="help-inline">Required</span>
+	    <input ng-readonly="profile.lastName" class="form-control" id="lastname" name="lastname" ng-model="profile.lastName" placeholder="Enter last name" required>
 	  </div>
 	  <div class="control-group">
 	    <label class="control-label" for="age">Age</label>
@@ -21,9 +19,7 @@
 	  </div>
 	  <div class="control-group">
 	    <label class="control-label" for="email">Email</label>
-	    <input type="email" class="form-control" id="email" name="email" ng-model="profile.email" placeholder="Enter email" required>
-	    <span ng-show="detailForm.email.$error.required" class="help-inline">Required</span>
-	    <span ng-show="detailForm.email.$error.email" class="help-inline">Not an Email Address</span>
+	    <input ng-readonly="profile.email" class="form-control" id="email" name="email" ng-model="profile.email" placeholder="Enter email" required>
 	  </div>
 	  <div class="control-group">
 	    <label class="control-label" for="phone">Phone</label>
@@ -69,7 +65,7 @@
       <br />
 	
 	  <button type="button" ng-click="cancel()" class="btn btn-info">Cancel</button>
-	  <button type="button" ng-click="save()" ng-disabled="noChange()" class="btn btn-info">Save</button>
+	  <button type="button" ng-click="save()" class="btn btn-info">Save</button>
     </fieldset>
   </form>
 </div>
