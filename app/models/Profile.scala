@@ -60,6 +60,36 @@ case class ProfileStatus(
   complete: Boolean)
 
 /**
+ * Service used by SecureSocial for user profile related data.
+ *
+ * Methods here are required per the SecureSocial UserService trait.
+ *
+ * Uses ProfileService for save and find implementations.
+ */
+class UserService(application: Application) extends UserServicePlugin(application) {
+  
+  def save(user: Identity): Identity = {
+    Model.profiles.save(user)
+  }
+
+  def find(id: IdentityId): Option[Identity] = { 
+    Model.profiles.find(id)
+  }
+
+  def deleteExpiredTokens(): Unit = {}
+
+  def deleteToken(uuid: String): Unit = {}
+
+  def findByEmailAndProvider(email: String,providerId: String): Option[Identity] = {
+    Option(SocialUser(IdentityId("",""),"","","",Option(""),None,AuthenticationMethod(""),None,None,None))
+  } 
+
+  def findToken(token: String): Option[Token] = { Map[String, Token]().get(token) } 
+
+  def save(token: Token): Unit = {}
+}
+
+/**
  * Service used by SecureSocial and Controllers for user profile related data.
  *
  * Uses ReactiveMongo + Play JSON library, using case classes that can be turned 
@@ -72,17 +102,8 @@ case class ProfileStatus(
  * Of course, you can still use the default Collection implementation
  * (BSONCollection.) See ReactiveMongo examples to learn how to use it.
  */
-class ProfileService(application: Application) extends UserServicePlugin(application) with Mongo {
+class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRepo) {
   import ProfileJsonFormats._
-
-  /*
-   * Get a JSONCollection (a Collection implementation that is designed to work
-   * with JsObject, Reads and Writes.)
-   * Note that the `collection` is not a `val`, but a `def`. We do _not_ store
-   * the collection reference to avoid potential problems in development with
-   * Play hot-reloading.
-   */
-  def collection = db.collection[JSONCollection]("profiles")
 
   /**
    * Saves base info for a new user. This method gets called by SecureSocial 
@@ -158,7 +179,7 @@ class ProfileService(application: Application) extends UserServicePlugin(applica
 
   /** Find an existing profile using given email. */
   def findByEmail(email: String) = {
-    collection.find(Json.obj("email" -> email)).cursor[JsValue].collect[List]()
+    mongo.profiles.find(Json.obj("email" -> email)).cursor[JsValue].collect[List]()
   }
 
   /**
@@ -176,7 +197,7 @@ class ProfileService(application: Application) extends UserServicePlugin(applica
 
   /** Find an existing profile using given document _id. */
   def findById(id: String) = {
-    collection.find(BSONDocument("_id" -> new BSONObjectID(id))).one[JsValue]
+    mongo.profiles.find(BSONDocument("_id" -> new BSONObjectID(id))).one[JsValue]
   }
 
   /** Update an existing profile for the given document _id. */
@@ -184,12 +205,12 @@ class ProfileService(application: Application) extends UserServicePlugin(applica
     val email = body.\("email").as[String]
     Cache.remove(email)
     Cache.set(email, ProfileStatus(id,true), 900)
-    collection.save(profile(new BSONObjectID(id), body))
+    mongo.profiles.save(profile(new BSONObjectID(id), body))
   }
 
   /** Insert a new profile for the given JSON. */
   def insertNew(body: JsValue) = {
-    collection.insert(body, writeConcern)
+    mongo.profiles.insert(body, mongo.writeConcern)
   }
 
   /** Construct and return profile object. */
@@ -213,22 +234,8 @@ class ProfileService(application: Application) extends UserServicePlugin(applica
         body.\("appointments").\("desc").as[String])))
   }
 
-  // these other methods are required per the SecureSocial UserService trait, these are dummy impls
-
-  def deleteExpiredTokens(): Unit = {}
-
-  def deleteToken(uuid: String): Unit = {}
-
-  def findByEmailAndProvider(email: String,providerId: String): Option[Identity] = {
-    Option(dummyIdentity)
-  } 
-
-  def findToken(token: String): Option[Token] = { Map[String, Token]().get(token) } 
-
-  def save(token: Token): Unit = {}
-
   def dummyIdentity = {
-    SocialUser(IdentityId("",""),"","","",Option(""),None,AuthenticationMethod(""),None,None,None)
+    Option(SocialUser(IdentityId("",""),"","","",Option(""),None,AuthenticationMethod(""),None,None,None))
   }
 
 }

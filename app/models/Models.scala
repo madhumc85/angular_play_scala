@@ -1,5 +1,6 @@
 package models
 
+import play.api.cache.Cache
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
@@ -22,8 +23,9 @@ import scala.concurrent.Future
  */
 object Model {
   val mongoRepo = new MongoRepo
+  val cacheRepo = new CacheRepo
   val appForms = new AppFormService(mongoRepo)
-  val profiles = new ProfileService(Play.current)
+  val profiles = new ProfileService(Play.current, mongoRepo, cacheRepo)
   def authorized(id: String,email: Option[String]) = { profiles.authorized(id, email) } 
   val unauthorized = { Future(Forbidden("Not authorized")) }
 }
@@ -32,7 +34,7 @@ object Model {
  * Class containing resources used by services to access MongoDB.
  */
 class MongoRepo {
-//def apply = new MongoRepo
+
   /** Returns the current instance of the driver. */
   def driver = ReactiveMongoPlugin.driver
   /** Returns the current MongoConnection instance (the connection pool manager). */
@@ -60,4 +62,11 @@ class MongoRepo {
 
   /** Find all available forms. */
   def findForms = { forms.find(Json.obj()).cursor[JsObject].collect[List]() }
+}
+
+/**
+ * Class containing resources used by services to access the cache.
+ */
+class CacheRepo {
+
 }
