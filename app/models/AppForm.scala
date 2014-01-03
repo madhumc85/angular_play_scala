@@ -25,17 +25,10 @@ object AppFormJsonFormats {
 }
 
 /**
- * Service used by SecureSocial and Controllers for user profile related data.
+ * Service used by Controller to get forms data.
  *
  * Uses ReactiveMongo + Play JSON library, using case classes that can be turned 
  * into Json using Reads and Writes.
- *
- * Instead of using the default Collection implementation (which interacts with
- * BSON structures + BSONReader/BSONWriter), we use a specialized
- * implementation that works with JsObject + Reads/Writes.
- *
- * Of course, you can still use the default Collection implementation
- * (BSONCollection.) See ReactiveMongo examples to learn how to use it.
  */
 class AppFormService(mongo: MongoRepo) {
   import AppFormJsonFormats.appFormFormat

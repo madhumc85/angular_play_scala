@@ -17,15 +17,14 @@ import reactivemongo.core.commands.GetLastError
 
 import scala.concurrent.Future
 
-
-
 /**
- * Implemented by Controllers to call methods on service instances.
+ * Singleton for Controllers to call methods on service instances.
  */
-trait Models {
-  val appFormService = new AppFormService(new MongoRepo)
-  val profileService = new ProfileService(Play.current)
-  def authorized(id: String,email: Option[String]) = { profileService.authorized(id, email) } 
+object Model {
+  val mongoRepo = new MongoRepo
+  val appForms = new AppFormService(mongoRepo)
+  val profiles = new ProfileService(Play.current)
+  def authorized(id: String,email: Option[String]) = { profiles.authorized(id, email) } 
   val unauthorized = { Future(Forbidden("Not authorized")) }
 }
 
@@ -33,7 +32,7 @@ trait Models {
  * Class containing resources used by services to access MongoDB.
  */
 class MongoRepo {
-
+//def apply = new MongoRepo
   /** Returns the current instance of the driver. */
   def driver = ReactiveMongoPlugin.driver
   /** Returns the current MongoConnection instance (the connection pool manager). */
