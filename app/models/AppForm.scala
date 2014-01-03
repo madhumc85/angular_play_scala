@@ -37,22 +37,9 @@ object AppFormJsonFormats {
  * Of course, you can still use the default Collection implementation
  * (BSONCollection.) See ReactiveMongo examples to learn how to use it.
  */
-class AppFormService extends Mongo {
+class AppFormService(mongo: MongoRepo) {
   import AppFormJsonFormats.appFormFormat
 
-  /*
-   * Get a JSONCollection (a Collection implementation that is designed to work
-   * with JsObject, Reads and Writes.)
-   * Note that the `collection` is not a `val`, but a `def`. We do _not_ store
-   * the collection reference to avoid potential problems in development with
-   * Play hot-reloading.
-   */
-  def collection: JSONCollection = db.collection[JSONCollection]("forms")
-
   /** list all available forms */
-  def listForms = {
-    // find all forms from mongo
-    collection.find(Json.obj()).cursor[AppForm].collect[List]()
-  }
-
+  def listForms = { mongo.findForms }
 }
