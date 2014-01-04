@@ -6,14 +6,15 @@ import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json.Json
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
 import play.api.mvc.Results._
 
 import play.modules.reactivemongo.ReactiveMongoPlugin
+import play.modules.reactivemongo.json.BSONFormats._
 import play.modules.reactivemongo.json.collection.JSONCollection
 
 import reactivemongo.api._
-import reactivemongo.bson.BSONString
-import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson._
 import reactivemongo.core.commands.GetLastError
 
 import scala.concurrent.Future
@@ -62,6 +63,24 @@ class MongoRepo {
 
   /** Find all available forms. */
   def findForms = { forms.find(Json.obj()).cursor[JsObject].collect[List]() }
+
+  /** Find profile by email. */
+  def findProfileByEmail(email: String) = {
+  	profiles.find(Json.obj("email" -> email)).cursor[JsValue].collect[List]()
+  }
+  
+  /** Find profile by mongo document. */
+  def findProfileById(id: String) { 
+    profiles.find(BSONDocument("_id" -> BSONObjectID(id))).one[JsValue]
+  }
+
+  /** Update profile (actually replaces whole doc). 
+   *  TODO writeconcern excluded because it's causing issues on save. Fix.
+   */
+  def updateProfile(doc: JsValue) = { profiles.save(doc) }
+
+  /** Insert new profile. */
+  def insertProfile(doc: JsValue) = { profiles.insert(doc, writeConcern) }
 }
 
 /**
@@ -72,21 +91,21 @@ class CacheRepo {
 
   /** Adds to cache if not already there. */
   def setIfNew[T:ClassTag](key: String, value: T) = {
-  	Cache.getOrElse(key, duration) { value }
+    Cache.getOrElse(key, duration) { value }
   }
 
   /** Adds to cache. */
   def set[T:ClassTag](key: String, value: T) = {
-  	Cache.set(key, value, duration)
+    Cache.set(key, value, duration)
   }
   
   /** Get from cache. */
   def get[T:ClassTag](key: String) = {
-  	Cache.getAs[T](key)
+    Cache.getAs[T](key)
   }
   
   /** Remove from cache. */
   def remove(key: String) = {
-  	Cache.remove(key)
+    Cache.remove(key)
   }
 }

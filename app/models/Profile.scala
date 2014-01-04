@@ -118,15 +118,17 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
   def save(user: Identity): Identity = {
     val email = user.email.getOrElse("")
     findByEmail(email).map {
-      case List(profile) =>  // found existing doc
+      // found existing doc
+      case List(profile) => 
         val _id = profile.\("_id").\("$oid").as[String]
         profile.\("age") match {
-          case _:JsUndefined =>  // didn't find an age, cache profile status as incomplete
-            cache.setIfNew(email, ProfileStatus(_id,false))
-          case x =>  // found an age entry, cache profile status as complete
-            cache.setIfNew(email, ProfileStatus(_id,true))
+          // didn't find an age, cache profile status as incomplete
+          case _:JsUndefined => cache.setIfNew(email, ProfileStatus(_id,false))
+          // found an age entry, cache profile status as complete
+          case x => cache.setIfNew(email, ProfileStatus(_id,true))
         }
-      case _ =>  // no existing doc in mongo, insert one
+      // no existing doc in mongo, insert one
+      case _ =>
         val _id = BSONObjectID.generate
         insertNew(Json.obj(
           "_id" -> _id,
@@ -170,16 +172,12 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
     val email = optEmail.getOrElse("")
     var authorized = false
     val authId = cache.get[ProfileStatus](email).map(_._id).getOrElse("")
-    if(authId == id) {
-      authorized = true
-    }
+    if(authId == id) authorized = true
     authorized
   }
 
   /** Find an existing profile using given email. */
-  def findByEmail(email: String) = {
-    mongo.profiles.find(Json.obj("email" -> email)).cursor[JsValue].collect[List]()
-  }
+  def findByEmail(email: String) = { mongo.findProfileByEmail(email) }
 
   /**
    * Finds a user by their user id in the cache. 
@@ -197,6 +195,8 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
   /** Find an existing profile using given document _id. */
   def findById(id: String) = {
     mongo.profiles.find(BSONDocument("_id" -> new BSONObjectID(id))).one[JsValue]
+    /**TODO causes compiler error in controller. Fix.
+    mongo.findProfileById(id)*/
   }
 
   /** Update an existing profile for the given document _id. */
@@ -204,13 +204,11 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
     val email = body.\("email").as[String]
     cache.remove(email)
     cache.set(email, ProfileStatus(id,true))
-    mongo.profiles.save(profile(new BSONObjectID(id), body))
+    mongo.updateProfile(profile(new BSONObjectID(id), body))
   }
 
   /** Insert a new profile for the given JSON. */
-  def insertNew(body: JsValue) = {
-    mongo.profiles.insert(body, mongo.writeConcern)
-  }
+  def insertNew(body: JsValue) = { mongo.insertProfile(body) }
 
   /** Construct and return profile object. */
   def profile(id: BSONObjectID,body: JsValue) = {
