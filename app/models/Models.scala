@@ -17,6 +17,7 @@ import reactivemongo.bson.BSONObjectID
 import reactivemongo.core.commands.GetLastError
 
 import scala.concurrent.Future
+import scala.reflect.ClassTag
 
 /**
  * Singleton for Controllers to call methods on service instances.
@@ -34,7 +35,6 @@ object Model {
  * Class containing resources used by services to access MongoDB.
  */
 class MongoRepo {
-
   /** Returns the current instance of the driver. */
   def driver = ReactiveMongoPlugin.driver
   /** Returns the current MongoConnection instance (the connection pool manager). */
@@ -68,5 +68,25 @@ class MongoRepo {
  * Class containing resources used by services to access the cache.
  */
 class CacheRepo {
+  val duration = 900  // we set caches to expire after 15 mins
 
+  /** Adds to cache if not already there. */
+  def setIfNew[T:ClassTag](key: String, value: T) = {
+  	Cache.getOrElse(key, duration) { value }
+  }
+
+  /** Adds to cache. */
+  def set[T:ClassTag](key: String, value: T) = {
+  	Cache.set(key, value, duration)
+  }
+  
+  /** Get from cache. */
+  def get[T:ClassTag](key: String) = {
+  	Cache.getAs[T](key)
+  }
+  
+  /** Remove from cache. */
+  def remove(key: String) = {
+  	Cache.remove(key)
+  }
 }

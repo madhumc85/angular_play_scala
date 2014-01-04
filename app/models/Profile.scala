@@ -1,6 +1,5 @@
 package models
 
-import play.api.cache.Cache
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json._
 import play.api.{Logger, Application}
@@ -123,9 +122,9 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
         val _id = profile.\("_id").\("$oid").as[String]
         profile.\("age") match {
           case _:JsUndefined =>  // didn't find an age, cache profile status as incomplete
-            Cache.getOrElse[ProfileStatus](email, 900) { ProfileStatus(_id,false) }
+            cache.setIfNew(email, ProfileStatus(_id,false))
           case x =>  // found an age entry, cache profile status as complete
-            Cache.getOrElse[ProfileStatus](email, 900) { ProfileStatus(_id,true) }
+            cache.setIfNew(email, ProfileStatus(_id,true))
         }
       case _ =>  // no existing doc in mongo, insert one
         val _id = BSONObjectID.generate
@@ -135,10 +134,10 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
           "lastName" -> user.lastName,
           "email" -> email))
         // cache profile status as incomplete
-        Cache.set(email, ProfileStatus(_id.stringify,false), 900)
+        cache.set(email, ProfileStatus(_id.stringify,false))
     }
-    // insert SecureSocial identity to cache if not found, 15 min expiry
-    Cache.getOrElse[Identity](user.identityId.userId, 900) { user }
+    // insert SecureSocial identity to cache if not found
+    cache.setIfNew(user.identityId.userId, user)
     user
   }
 
@@ -151,7 +150,7 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
   def buildRedirUrl(optEmail: Option[String]) = {
     val email = optEmail.getOrElse("")
     var redirUrl = ""
-    val profileStatus = Cache.getAs[ProfileStatus](email)
+    val profileStatus = cache.get[ProfileStatus](email)
     val id = profileStatus.map(_._id).getOrElse("")
     val complete = profileStatus.map(_.complete).getOrElse(false)
     if(complete) {
@@ -170,7 +169,7 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
   def authorized(id: String,optEmail: Option[String]) = {
     val email = optEmail.getOrElse("")
     var authorized = false
-    val authId = Cache.getAs[ProfileStatus](email).map(_._id).getOrElse("")
+    val authId = cache.get[ProfileStatus](email).map(_._id).getOrElse("")
     if(authId == id) {
       authorized = true
     }
@@ -188,10 +187,10 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
    * 15 min expiry is updated each time called.
    */
   def find(id: IdentityId): Option[Identity] = { 
-    val optIdentity = Cache.getAs[Identity](id.userId)
+    val optIdentity = cache.get[Identity](id.userId)
     // remove and reset 15 min expiry
-    Cache.remove(id.userId)
-    Cache.set(id.userId, optIdentity.getOrElse(dummyIdentity), 900)
+    cache.remove(id.userId)
+    cache.set(id.userId, optIdentity.getOrElse(dummyIdentity))
     optIdentity
   }
 
@@ -203,8 +202,8 @@ class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRep
   /** Update an existing profile for the given document _id. */
   def updateById(id: String,body: JsValue) = {
     val email = body.\("email").as[String]
-    Cache.remove(email)
-    Cache.set(email, ProfileStatus(id,true), 900)
+    cache.remove(email)
+    cache.set(email, ProfileStatus(id,true))
     mongo.profiles.save(profile(new BSONObjectID(id), body))
   }
 
