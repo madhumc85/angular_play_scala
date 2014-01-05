@@ -17,6 +17,7 @@ import reactivemongo.api._
 import reactivemongo.bson._
 import reactivemongo.core.commands.GetLastError
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.reflect.ClassTag
 
@@ -27,7 +28,7 @@ object Model {
   val mongoRepo = new MongoRepo
   val cacheRepo = new CacheRepo
   val appForms = new AppFormService(mongoRepo)
-  val profiles = new ProfileService(Play.current, mongoRepo, cacheRepo)
+  val profiles = new ProfileService(mongoRepo, cacheRepo)
   def authorized(id: String,email: Option[String]) = { profiles.authorized(id, email) } 
   val unauthorized = { Future(Forbidden("Not authorized")) }
 }

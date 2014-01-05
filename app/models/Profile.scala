@@ -101,7 +101,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
  * Of course, you can still use the default Collection implementation
  * (BSONCollection.) See ReactiveMongo examples to learn how to use it.
  */
-class ProfileService(application: Application, mongo: MongoRepo, cache: CacheRepo) {
+class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
   import ProfileJsonFormats._
 
   /**
