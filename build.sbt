@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
   // Add your own project dependencies in the form:
   // "group" % "artifact" % "version"
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*"),
-  "securesocial" %% "securesocial" % "2.1.2"
+  "securesocial" %% "securesocial" % "2.1.2" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*")
 )
 
 play.Project.playScalaSettings
