@@ -2,10 +2,11 @@ name := """angular_play_scala"""
 
 version := "1.0-SNAPSHOT"
 
-resolvers ++= Seq(
-  "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/",
-  Resolver.url("sbt-plugin-releases", url("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
-)
+play.Project.playScalaSettings
+
+//resolvers ++= Seq(
+//  Resolver.url("sbt-plugin-releases", url("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
+//)
 
 libraryDependencies ++= Seq(
   // Select Play modules
@@ -16,8 +17,6 @@ libraryDependencies ++= Seq(
   //javaCore,  // The core Java API
   // Add your own project dependencies in the form:
   // "group" % "artifact" % "version"
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*"),
-  "securesocial" %% "securesocial" % "2.1.2" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*")
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2",
+  "securesocial" %% "securesocial" % "2.1.2"
 )
-
-play.Project.playScalaSettings
