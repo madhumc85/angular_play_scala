@@ -4,9 +4,9 @@ version := "1.0-SNAPSHOT"
 
 play.Project.playScalaSettings
 
-//resolvers ++= Seq(
-//  Resolver.url("sbt-plugin-releases", url("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
-//)
+resolvers ++= Seq(
+  Resolver.url("sbt-plugin-releases", url("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
+)
 
 libraryDependencies ++= Seq(
   // Select Play modules
