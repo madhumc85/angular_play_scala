@@ -40,7 +40,7 @@
         ruby domain.rb --domain vm.example.com</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>play clean stage</command>
+      <command>play clean-all compile</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>play test</command>
@@ -52,7 +52,7 @@
         export DOMAIN=vm.example.com
         export CLIENT_ID=google_client_id
         export CLIENT_SECRET=google_client_secret
-        nohup ./target/universal/stage/bin/angular_play_scala -Dhttp.address=0.0.0.0</command>
+        play start -Dhttp.address=0.0.0.0</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
