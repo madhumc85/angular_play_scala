@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
   //javaCore,  // The core Java API
   // Add your own project dependencies in the form:
   // "group" % "artifact" % "version"
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2" exclude("com.typesafe.play", "play-iteratees_2.10"),
   "securesocial" %% "securesocial" % "2.1.2",
   "org.mockito" % "mockito-core" % "1.9.5"
 )
