@@ -31,6 +31,7 @@ trait setup extends Scope with Mockito {
   val mongoRepo = mock[MongoRepo]
   val cacheRepo = mock[CacheRepo]
   val _id = new BSONObjectID("12345")
+  val id = _id.stringify
   val userId = "123"
   val email = "foo@foo.com"
   val name = "foo"
@@ -39,12 +40,12 @@ trait setup extends Scope with Mockito {
       IdentityId(userId,"google"),name,name,name+" "+name,Option(email),None,
         AuthenticationMethod(""),None,None,None)
   val incompleteProfile = Json.obj(
-    "_id" -> Json.obj("$oid" -> _id.stringify),
+    "_id" -> Json.obj("$oid" -> id),
     "firstName" -> name,
     "lastName" -> name,
     "email" -> email)
   val completeProfile = Json.obj(
-    "_id" -> Json.obj("$oid" -> _id.stringify),
+    "_id" -> Json.obj("$oid" -> id),
     "firstName" -> name,
     "lastName" -> name,
     "age" -> 66,
@@ -59,8 +60,10 @@ trait setup extends Scope with Mockito {
     "appointments" -> Json.obj(
       "date" -> "01/01/2014",
       "desc" -> "foobar"))
-  val incompleteProfileStatus = ProfileStatus(_id.stringify,false)
-  val completeProfileStatus = ProfileStatus(_id.stringify,true)
+  val incompleteProfileStatus = ProfileStatus(id,false)
+  val completeProfileStatus = ProfileStatus(id,true)
+  val profileRedirUrl = s"/profile/$id"
+  val createRedirUrl = s"/create/$id"
 }
 
 /**
@@ -103,6 +106,23 @@ class ProfileSpec extends Specification {
       there was one(cacheRepo).setIfNew(email, completeProfileStatus)
       there was one(cacheRepo).setIfNew(userId, user)
       returnedUser mustEqual user
+    }
+  }
+
+  "ProfileService#buildRedirUrl" should {
+    "return profile URL string when user has complete profile" in new setup {
+
+      val profileService = new ProfileService(mongoRepo, cacheRepo)
+      cacheRepo.get[ProfileStatus](email: String) returns Option(completeProfileStatus)
+      val returnedUrl = profileService.buildRedirUrl(Option(email))
+      returnedUrl mustEqual profileRedirUrl
+    }
+    "return create profile URL string when user has incomplete profile" in new setup {
+
+      val profileService = new ProfileService(mongoRepo, cacheRepo)
+      cacheRepo.get[ProfileStatus](email: String) returns Option(incompleteProfileStatus)
+      val returnedUrl = profileService.buildRedirUrl(Option(email))
+      returnedUrl mustEqual createRedirUrl
     }
   }
   
