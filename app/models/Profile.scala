@@ -129,7 +129,7 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
         }
       // no existing doc in mongo, insert one
       case _ =>
-        val _id = BSONObjectID.generate
+        val _id = createId
         insertNew(Json.obj(
           "_id" -> _id,
           "firstName" -> user.firstName,
@@ -230,6 +230,8 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
         body.\("appointments").\("date").as[String],
         body.\("appointments").\("desc").as[String])))
   }
+
+  def createId = { BSONObjectID.generate }
 
   def dummyIdentity = {
     Option(SocialUser(IdentityId("",""),"","","",Option(""),None,AuthenticationMethod(""),None,None,None))
