@@ -22,7 +22,7 @@ A picture's worth a thousand words.
 ## 1. Required installs
 
 * Java 6 or higher
-* Play framework for local dev - http://downloads.typesafe.com/typesafe-activator/1.0.10/typesafe-activator-1.0.10.zip (Use the Typesafe Activator for local dev)
+* Play framework for local dev - http://www.playframework.com/download (instructions), http://downloads.typesafe.com/typesafe-activator/1.0.10/typesafe-activator-1.0.10.zip (d/l file, uses the Typesafe Activator for local dev)
 * VirtualBox - https://www.virtualbox.org/wiki/Downloads
 * Vagrant - http://www.vagrantup.com/downloads.html
 * Git - if you don't already have (clone this repo)
