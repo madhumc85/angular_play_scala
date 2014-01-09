@@ -125,5 +125,22 @@ class ProfileSpec extends Specification {
       returnedUrl mustEqual createRedirUrl
     }
   }
+
+  "ProfileService#authorize" should {
+    "return true when passed id matches id in cache" in new setup {
+
+      val profileService = new ProfileService(mongoRepo, cacheRepo)
+      cacheRepo.get[ProfileStatus](email: String) returns Option(completeProfileStatus)
+      val authorized = profileService.authorized(id, Option(email))
+      authorized mustEqual true
+    }
+    "return false when passed id doesn't match id in cache" in new setup {
+
+      val profileService = new ProfileService(mongoRepo, cacheRepo)
+      cacheRepo.get[ProfileStatus](email: String) returns Option(completeProfileStatus)
+      val authorized = profileService.authorized("6789", Option(email))
+      authorized mustEqual false
+    }
+  }
   
 }
