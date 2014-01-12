@@ -85,19 +85,26 @@ class MongoRepo {
 }
 
 /**
+ * Class for storing cache data.
+ */
+case class CacheObj[T](
+  key: String,
+  value: T)
+
+/**
  * Class containing resources used by services to access the cache.
  */
 class CacheRepo {
   val duration = 900  // we set caches to expire after 15 mins
 
   /** Adds to cache if not already there. */
-  def setIfNew[T:ClassTag](key: String, value: T) = {
-    Cache.getOrElse(key, duration) { value }
+  def setIfNew[T:ClassTag](obj: CacheObj[T]) = {
+    Cache.getOrElse(obj.key, duration) { obj.value }
   }
 
   /** Adds to cache. */
-  def set[T:ClassTag](key: String, value: T) = {
-    Cache.set(key, value, duration)
+  def set[T:ClassTag](obj: CacheObj[T]) = {
+    Cache.set(obj.key, obj.value, duration)
   }
   
   /** Get from cache. */

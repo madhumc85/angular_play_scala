@@ -9,6 +9,7 @@ import play.modules.reactivemongo.json.BSONFormats._
 import play.modules.reactivemongo.json.collection.JSONCollection
 
 import reactivemongo.api._
+import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONObjectID
 
@@ -123,9 +124,9 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
         val _id = profile.\("_id").\("$oid").as[String]
         profile.\("age") match {
           // didn't find an age, cache profile status as incomplete
-          case _:JsUndefined => cache.setIfNew(email, ProfileStatus(_id,false))
+          case _:JsUndefined => cache.setIfNew(CacheObj(email, ProfileStatus(_id,false)))
           // found an age entry, cache profile status as complete
-          case x => cache.setIfNew(email, ProfileStatus(_id,true))
+          case x => cache.setIfNew(CacheObj(email, ProfileStatus(_id,true)))
         }
       // no existing doc in mongo, insert one
       case _ =>
@@ -136,10 +137,10 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
           "lastName" -> user.lastName,
           "email" -> email))
         // cache profile status as incomplete
-        cache.set(email, ProfileStatus(_id.stringify,false))
+        cache.set(CacheObj(email, ProfileStatus(_id.stringify,false)))
     }
     // insert SecureSocial identity to cache if not found
-    cache.setIfNew(user.identityId.userId, user)
+    cache.setIfNew(CacheObj(user.identityId.userId, user))
     user
   }
 
@@ -188,7 +189,7 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
     val optIdentity = cache.get[Identity](id.userId)
     // remove and reset 15 min expiry
     cache.remove(id.userId)
-    cache.set(id.userId, optIdentity.getOrElse(dummyIdentity))
+    cache.set(CacheObj(id.userId, optIdentity.getOrElse(dummyIdentity)))
     optIdentity
   }
 
@@ -203,7 +204,7 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
   def updateById(id: String,body: JsValue) = {
     val email = body.\("email").as[String]
     cache.remove(email)
-    cache.set(email, ProfileStatus(id,true))
+    cache.set(CacheObj(email, ProfileStatus(id,true)))
     mongo.updateProfile(profile(new BSONObjectID(id), body))
   }
 
@@ -232,6 +233,8 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
   }
 
   def createId = { BSONObjectID.generate }
+
+  def currTime = { BSONDateTime(System.currentTimeMillis) }
 
   def dummyIdentity = {
     Option(SocialUser(IdentityId("",""),"","","",Option(""),None,AuthenticationMethod(""),None,None,None))
