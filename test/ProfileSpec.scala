@@ -1,24 +1,28 @@
 package test
 
-import models.CacheRepo
-import models.MongoRepo
-import models.ProfileService
-import models.ProfileStatus
+import org.mockito.Matchers._
+
+import models._
 
 import org.specs2.matcher.AnyMatchers._ 
 import org.specs2.mock._
+import org.specs2.mock.mockito.ArgumentCapture
 import org.specs2.mutable._
 import org.specs2.specification.Scope
 
+import play.api.Play.current
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.test._
 import play.api.test.Helpers._
+import play.modules.reactivemongo.json.BSONFormats._
 
+import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONObjectID
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
+import scala.reflect.ClassTag
 
 import securesocial.core._
 import securesocial.core.IdentityId
@@ -35,6 +39,7 @@ trait setup extends Scope with Mockito {
   val userId = "123"
   val email = "foo@foo.com"
   val name = "foo"
+  val dateTime = BSONDateTime(System.currentTimeMillis)
   val user = 
     SocialUser(
       IdentityId(userId,"google"),name,name,name+" "+name,Option(email),None,
@@ -64,6 +69,9 @@ trait setup extends Scope with Mockito {
   val completeProfileStatus = ProfileStatus(id,true)
   val profileRedirUrl = s"/profile/$id"
   val createRedirUrl = s"/create/$id"
+  val jsonArg = capture[JsValue]
+  val profStatCacheArg = capture[ProfStatCache]
+  val idCacheArg = capture[IdCache]
 }
 
 /**
@@ -72,6 +80,7 @@ trait setup extends Scope with Mockito {
 class ProfileSpec extends Specification {
 
   "ProfileService#save" should {
+
     "create incomplete profile in mongo for brand new user" in new setup {
       
       val profileService = new ProfileService(mongoRepo, cacheRepo) {
@@ -80,22 +89,43 @@ class ProfileSpec extends Specification {
         }
         override def createId = { _id }
       }
+      
       val returnedUser = profileService.save(user)
-      there was one(mongoRepo).insertProfile(incompleteProfile)
-      there was one(cacheRepo).setIfNew(userId, user)
+
+      // verify
+      there was one(mongoRepo).insertProfile(jsonArg)
+      jsonArg.value mustEqual incompleteProfile
+
+      there was one(cacheRepo).set(profStatCacheArg)
+      profStatCacheArg.value.key mustEqual email
+      profStatCacheArg.value.value mustEqual incompleteProfileStatus
+
+      there was one(cacheRepo).setIfNew(idCacheArg)
+      idCacheArg.value.key mustEqual userId
+      idCacheArg.value.value mustEqual user
+
       returnedUser mustEqual user
     }
+
     "set incomplete profile status in cache for new user with existing base profile in mongo" in new setup {
       val profileService = new ProfileService(mongoRepo, cacheRepo) {
         override def findByEmail(email: String) = {
           Future { List[JsValue](incompleteProfile) }  // existing user with incomplete profile
         }
       }
+
       val returnedUser = profileService.save(user)
-      there was one(cacheRepo).setIfNew(email, incompleteProfileStatus)
-      there was one(cacheRepo).setIfNew(userId, user)
+  
+      // verify
+      there was one(cacheRepo).setIfNew(profStatCacheArg)
+
+      there was one(cacheRepo).setIfNew(idCacheArg)
+      idCacheArg.value.key mustEqual userId
+      idCacheArg.value.value mustEqual user
+
       returnedUser mustEqual user
     }
+
     "set complete profile status in cache for new user with existing full profile in mongo" in new setup {
       val profileService = new ProfileService(mongoRepo, cacheRepo) {
         override def findByEmail(email: String) = {
@@ -103,8 +133,14 @@ class ProfileSpec extends Specification {
         }
       }
       val returnedUser = profileService.save(user)
-      there was one(cacheRepo).setIfNew(email, completeProfileStatus)
-      there was one(cacheRepo).setIfNew(userId, user)
+      
+      // verify
+      there was one(cacheRepo).setIfNew(profStatCacheArg)
+
+      there was one(cacheRepo).setIfNew(idCacheArg)
+      idCacheArg.value.key mustEqual userId
+      idCacheArg.value.value mustEqual user
+
       returnedUser mustEqual user
     }
   }

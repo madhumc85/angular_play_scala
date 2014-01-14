@@ -21,6 +21,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.reflect.ClassTag
 
+import securesocial.core.Identity
+
 /**
  * Singleton for Controllers to call methods on service instances.
  */
@@ -85,11 +87,15 @@ class MongoRepo {
 }
 
 /**
- * Class for storing cache data.
+ * Case classes for storing cache data.
  */
-case class CacheObj[T](
+case class ProfStatCache(
   key: String,
-  value: T)
+  value: ProfileStatus)
+
+case class IdCache(
+  key: String,
+  value: Identity)
 
 /**
  * Class containing resources used by services to access the cache.
@@ -98,12 +104,20 @@ class CacheRepo {
   val duration = 900  // we set caches to expire after 15 mins
 
   /** Adds to cache if not already there. */
-  def setIfNew[T:ClassTag](obj: CacheObj[T]) = {
+  def setIfNew(obj: ProfStatCache) = {
+    Cache.getOrElse(obj.key, duration) { obj.value }
+  }
+
+  def setIfNew(obj: IdCache) = {
     Cache.getOrElse(obj.key, duration) { obj.value }
   }
 
   /** Adds to cache. */
-  def set[T:ClassTag](obj: CacheObj[T]) = {
+  def set(obj: ProfStatCache) = {
+    Cache.set(obj.key, obj.value, duration)
+  }
+
+  def set(obj: IdCache) = {
     Cache.set(obj.key, obj.value, duration)
   }
   
