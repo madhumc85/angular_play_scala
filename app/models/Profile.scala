@@ -35,7 +35,8 @@ case class Profile(
   state: String,
   zip: Int,
   applications: Applcation,
-  appointments: Appointment)
+  appointments: Appointment,
+  updateDt: BSONDateTime)
 
 case class Applcation(
   date: String,
@@ -135,7 +136,8 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
           "_id" -> _id,
           "firstName" -> user.firstName,
           "lastName" -> user.lastName,
-          "email" -> email))
+          "email" -> email,
+          "updateDt" -> dateTime))
         // cache profile status as incomplete
         cache.set(ProfStatCache(email, ProfileStatus(_id.stringify,false)))
     }
@@ -229,12 +231,13 @@ class ProfileService(mongo: MongoRepo, cache: CacheRepo) {
         body.\("applications").\("desc").as[String]),
       Appointment(
         body.\("appointments").\("date").as[String],
-        body.\("appointments").\("desc").as[String])))
+        body.\("appointments").\("desc").as[String]),
+      dateTime))
   }
 
   def createId = { BSONObjectID.generate }
 
-  def currTime = { BSONDateTime(System.currentTimeMillis) }
+  def dateTime = { BSONDateTime(System.currentTimeMillis) }
 
   def dummyIdentity = {
     SocialUser(IdentityId("",""),"","","",Option(""),None,AuthenticationMethod(""),None,None,None)

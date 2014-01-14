@@ -39,7 +39,7 @@ trait setup extends Scope with Mockito {
   val userId = "123"
   val email = "foo@foo.com"
   val name = "foo"
-  val dateTime = BSONDateTime(System.currentTimeMillis)
+  val dtTime = BSONDateTime(System.currentTimeMillis)
   val user = 
     SocialUser(
       IdentityId(userId,"google"),name,name,name+" "+name,Option(email),None,
@@ -48,7 +48,8 @@ trait setup extends Scope with Mockito {
     "_id" -> Json.obj("$oid" -> id),
     "firstName" -> name,
     "lastName" -> name,
-    "email" -> email)
+    "email" -> email,
+    "updateDt" -> dtTime)
   val completeProfile = Json.obj(
     "_id" -> Json.obj("$oid" -> id),
     "firstName" -> name,
@@ -64,7 +65,8 @@ trait setup extends Scope with Mockito {
       "desc" -> "foobar"),
     "appointments" -> Json.obj(
       "date" -> "01/01/2014",
-      "desc" -> "foobar"))
+      "desc" -> "foobar"),
+    "updateDt" -> dtTime)
   val incompleteProfileStatus = ProfileStatus(id,false)
   val completeProfileStatus = ProfileStatus(id,true)
   val profileRedirUrl = s"/profile/$id"
@@ -88,6 +90,7 @@ class ProfileSpec extends Specification {
           Future { List[JsValue]() }  // brand new user, so no data in mongo for user
         }
         override def createId = { _id }
+        override def dateTime = { dtTime }
       }
       
       val returnedUser = profileService.save(user)
@@ -176,6 +179,37 @@ class ProfileSpec extends Specification {
       cacheRepo.get[ProfileStatus](email: String) returns Option(completeProfileStatus)
       val authorized = profileService.authorized("6789", Option(email))
       authorized mustEqual false
+    }
+  }
+
+  "ProfileService#find" should {
+    "update user in cache and return user" in new setup {
+
+      val profileService = new ProfileService(mongoRepo, cacheRepo)
+      cacheRepo.get[Identity](userId: String) returns Option(user)
+      val returnedUser = profileService.find(user.identityId)
+
+      there was one(cacheRepo).set(idCacheArg)
+      idCacheArg.value.key mustEqual userId
+      idCacheArg.value.value mustEqual user
+      returnedUser mustEqual Option(user)
+    }
+  }
+
+  "ProfileService#updateById" should {
+    "update profile status in cache to complete and update user in mongo" in new setup {
+
+      val profileService = new ProfileService(mongoRepo, cacheRepo) {
+        override def dateTime = { dtTime }
+      }
+      profileService.updateById(id, completeProfile)
+
+      there was one(cacheRepo).set(profStatCacheArg)
+      profStatCacheArg.value.key mustEqual email
+      profStatCacheArg.value.value mustEqual completeProfileStatus
+
+      there was one(mongoRepo).updateProfile(jsonArg)
+      jsonArg.value mustEqual completeProfile
     }
   }
   
